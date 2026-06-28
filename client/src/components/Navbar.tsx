@@ -1,7 +1,8 @@
 import { useState } from "react";
-import { Menu, X, ShoppingCart } from "lucide-react";
+import { Menu, X, ShoppingCart, Search } from "lucide-react";
 import { NavLink } from "react-router-dom";
 import logo from "../assets/novaTech_logo.png";
+import SearchBar from "./SearchBar.tsx";
 
 const navLinks = [
   { name: "Home", href: "/" },
@@ -14,6 +15,7 @@ const navLinks = [
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [showMobileSearch, setShowMobileSearch] = useState<boolean>(false);
   return (
     <nav className="sticky top-0 z-50 bg-white shadow-sm border-b">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
@@ -42,8 +44,46 @@ const Navbar = () => {
           ))}
         </ul>
 
+        {/* Desktop Search Bar */}
+        <div className="hidden md:flex max-w-md w-full relative items-center">
+          <SearchBar />
+          <Search size={18} className="absolute left-3 text-textPrimary" />
+          {/* <button className="absolute right-3 top-1/2 -translate-y-1/2">
+            <X size={18} />
+          </button> */}
+        </div>
+
         {/* Desktop Icons */}
         <div className="items-center gap-4 flex">
+          {/* Action Group */}
+          <div className="items-center gap-2 flex shrink-0 relative">
+            {/* Mobile Search Toggle Button */}
+
+            <button
+              className="md:hidden text-primary"
+              onClick={() => setShowMobileSearch(!showMobileSearch)}
+              aria-label="Toggle search"
+            >
+              {!showMobileSearch && <Search size={24} />}
+            </button>
+            <div
+              className={`overflow-hidden transition-all duration-300 ease-in-out ${
+                showMobileSearch
+                  ? "max-w-[200px] opacity-100 scale-100"
+                  : "max-w-0 w-0 opacity-0 scale-95"
+              }`}
+            >
+              <SearchBar />
+            </div>
+            {showMobileSearch && (
+              <button
+                onClick={() => setShowMobileSearch(!showMobileSearch)}
+                className="absolute right-3 top-1/2 -translate-y-1/2"
+              >
+                <X size={18} />
+              </button>
+            )}
+          </div>
           <div className="relative">
             <ShoppingCart size={26} className="cursor-pointer text-primary " />
             <span className="absolute h-4 w-4 rounded-full bg-secondary text-white text-xs right-0 -top-2 justify-center items-center flex">
