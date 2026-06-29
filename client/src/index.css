@@ -35,3 +35,17 @@
     @apply bg-gray-400 rounded-full hover:bg-gray-500;
   }
 }
+
+.swiper-pagination-bullet {
+  width: 10px;
+  height: 10px;
+  background: #003366 !important;
+  opacity: 1;
+  transition: all 0.3s ease;
+}
+
+.swiper-pagination-bullet-active {
+  width: 28px;
+  border-radius: 9999px;
+  background: #14b8a6 !important; /* your secondary color */
+}

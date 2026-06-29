@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { Menu, X, ShoppingCart, Search } from "lucide-react";
 import { NavLink } from "react-router-dom";
-import logo from "../assets/novaTech_logo.png";
 import SearchBar from "./SearchBar.tsx";
+import { assets } from "../assets/asset";
 
 const navLinks = [
   { name: "Home", href: "/" },
@@ -21,7 +21,7 @@ const Navbar = () => {
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
         {/* Logo */}
         <img
-          src={logo}
+          src={assets.logo}
           alt="novaTech-logo"
           className="object-contain w-auto h-12"
         />

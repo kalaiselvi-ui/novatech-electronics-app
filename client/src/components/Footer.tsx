@@ -1,5 +1,5 @@
 import { FaFacebookF, FaInstagram, FaTwitter, FaYoutube } from "react-icons/fa";
-import logo from "../assets/novaTech_logo.png";
+import { assets } from "../assets/asset.ts";
 
 const Footer = () => {
   const shopLinks = [
@@ -21,7 +21,7 @@ const Footer = () => {
           {/* BRAND */}
           <div className="md:col-span-2">
             <img
-              src={logo}
+              src={assets.logo}
               alt="novaTech-logo"
               className="object-contain w-26 h-12"
             />
