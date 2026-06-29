@@ -25,6 +25,10 @@
     font-family: "Poppins", sans-serif;
     font-weight: bold;
   }
+  h1,
+  h2 {
+    @apply text-3xl font-bold;
+  }
   ::-webkit-scrollbar {
     width: 8px;
   }

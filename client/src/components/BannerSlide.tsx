@@ -1,4 +1,4 @@
-import type { SlideData } from "../types/hero.ts";
+import type { SlideData } from "../types/type.ts";
 
 const BannerSlide = ({
   title,

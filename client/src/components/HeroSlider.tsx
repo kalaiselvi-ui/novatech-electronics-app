@@ -5,7 +5,7 @@ import BannerSlide from "./BannerSlide.tsx";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { Navigation, Pagination } from "swiper/modules";
-import type { SlideData } from "../types/hero.ts";
+import type { SlideData } from "../types/type.ts";
 
 type HeroSliderProps = {
   slides: SlideData[];

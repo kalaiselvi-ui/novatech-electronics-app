@@ -8,3 +8,9 @@ export type SlideData = {
   secondaryBtn: string;
   bgColor: string;
 };
+
+export interface categoryProps {
+  name: string;
+  slug: string;
+  image: string;
+}
