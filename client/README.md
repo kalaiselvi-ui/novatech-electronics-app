@@ -235,3 +235,56 @@ Keyboard
 SSD
 Webcam
 Monitor
+
+Phase 1 ✅
+Navbar
+Hero
+Categories
+Product listing
+
+Status: Almost complete.
+
+Phase 2
+Product Details page
+Image gallery
+Description
+Related products
+Phase 3
+Cart data model
+Add to Cart
+Quantity
+Remove item
+Navbar badge
+
+This is where we'll learn Context or Redux.
+
+Phase 4
+Cart page
+Order summary
+Empty cart
+Phase 5
+Backend integration
+Fetch products
+API pagination
+Loading
+Error handling
+Phase 6
+Authentication
+Login
+Protected routes
+Phase 7
+Wishlist
+Search
+Filters
+Sorting
+Phase 8
+Performance
+Lazy loading
+Memoization
+Code splitting
+
+For your ecommerce project, you'll likely end up using all three:
+
+utils/ → shuffleArray, formatPrice, etc.
+hooks/ → usePagination, useDebounce, maybe useLocalStorage.
+store/ → cartStore, authStore, wishlistStore.

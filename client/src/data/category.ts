@@ -54,5 +54,6 @@ export const categories = [
   { name: "Headphones", image: assets.headPhone, slug: "headphone" },
   { name: "Smart Watches", image: assets.smart_watch, slug: "smart-watch" },
   { name: "Cameras", image: assets.camera, slug: "camera" },
+  { name: "Gaming", image: assets.gaming, slug: "gaming" },
   { name: "Accessories", image: assets.speaker, slug: "speaker" },
 ];

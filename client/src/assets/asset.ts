@@ -13,7 +13,7 @@ import earPhone from "../assets/earphone.png";
 import smart_watch from "../assets/smart_watch.png";
 import speaker from "../assets/speaker1.png";
 import television from "../assets/television.png";
-
+import gaming from "../assets/gaming.webp";
 export const assets = {
   logo,
   hero_banner,
@@ -30,4 +30,5 @@ export const assets = {
   earPhone,
   smart_watch,
   television,
+  gaming,
 };

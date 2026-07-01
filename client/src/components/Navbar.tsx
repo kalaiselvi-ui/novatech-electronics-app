@@ -87,7 +87,7 @@ const Navbar = () => {
           <div className="relative">
             <ShoppingCart size={26} className="cursor-pointer text-primary " />
             <span className="absolute h-4 w-4 rounded-full bg-secondary text-white text-xs right-0 -top-2 justify-center items-center flex">
-              0
+              2
             </span>
           </div>
 

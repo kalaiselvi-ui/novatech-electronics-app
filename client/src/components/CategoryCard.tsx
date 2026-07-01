@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
-import type { categoryProps } from "../types/type.ts";
+import type { CategoryProps } from "../types/type.ts";
 
-const CategoryCard = ({ image, slug, name }: categoryProps) => {
+const CategoryCard = ({ image, slug, name }: CategoryProps) => {
   return (
     <Link
       to={`/category/${slug}`}
