@@ -1,16 +1,13 @@
 import { useState } from "react";
 import { Menu, X, ShoppingCart, Search } from "lucide-react";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import SearchBar from "./SearchBar.tsx";
 import { assets } from "../assets/asset";
 
 const navLinks = [
   { name: "Home", href: "/" },
   { name: "Products", href: "/products" },
-  { name: "Categories", href: "/categories" },
-  { name: "Deals", href: "/deals" },
   { name: "About", href: "/about" },
-  { name: "Contact", href: "/contact" },
 ];
 
 const Navbar = () => {
@@ -20,11 +17,14 @@ const Navbar = () => {
     <nav className="sticky top-0 z-50 bg-white shadow-sm border-b">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
         {/* Logo */}
-        <img
-          src={assets.logo}
-          alt="novaTech-logo"
-          className="object-contain w-auto h-12"
-        />
+        <Link to="/">
+          {" "}
+          <img
+            src={assets.logo}
+            alt="novaTech-logo"
+            className="object-contain w-auto h-12"
+          />
+        </Link>
 
         {/* Desktop Menu */}
         <ul className="hidden items-center gap-8 md:flex">

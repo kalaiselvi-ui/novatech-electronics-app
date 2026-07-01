@@ -30,7 +30,7 @@ const ProductCard = ({
         {/* Floating Category Badge */}
         <div className="absolute top-3 left-3 flex items-center gap-1.5 flex-wrap">
           {/* Category Badge */}
-          <span className="px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-gray-700 bg-white/80 backdrop-blur-md rounded-lg shadow-sm border border-white/40">
+          <span className="px-2.5 py-1 text-[10px] font-extrabold uppercase tracking-widest text-primary bg-blue-50 border border-primary/15 rounded-md shadow-sm">
             {category}
           </span>
 
@@ -38,9 +38,9 @@ const ProductCard = ({
           {isFeatured && (
             <span
               aria-label="sparkle-icon"
-              className="px-2.5 py-1 flex gap-2 text-[10px] font-bold uppercase tracking-wider text-amber-700 bg-amber-50/90 backdrop-blur-md rounded-lg shadow-sm border border-amber-200/50"
+              className="px-2.5 py-1 flex items-center gap-1 text-[10px] font-extrabold uppercase tracking-widest text-white bg-secondary/80 border border-secondary/20 rounded-md shadow-sm"
             >
-              <Sparkles className="w-3 h-3" /> Featured
+              <Sparkles className="w-3 h-3 text-white" /> Featured
             </span>
           )}
         </div>

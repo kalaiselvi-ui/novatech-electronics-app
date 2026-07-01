@@ -8,7 +8,7 @@ const FeaturedProduct = () => {
       <span className="inline-flex items-center rounded-full bg-secondary/10 px-3 py-1 text-sm font-medium text-secondary mb-3">
         Featured Collection
       </span>
-      <div className="flex items-end justify-between mb-8">
+      <div className="md:flex space-y-2 items-end justify-between mb-8">
         <div>
           <div className="relative">
             <h2 className=" text-2xl font-bold text-gray-900">

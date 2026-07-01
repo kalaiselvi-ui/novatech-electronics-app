@@ -8,7 +8,6 @@ import Pagination from "../components/Pagination.tsx";
 import { shuffleArray } from "../utils/shuffle.ts";
 import { usePagination } from "../hooks/usePagination.ts";
 import FeaturedProduct from "../components/FeaturedProduct.tsx";
-import { ChevronLeft, ChevronRight } from "lucide-react";
 import SliderArrow from "../utils/SliderArrow.tsx";
 
 const Home = () => {
