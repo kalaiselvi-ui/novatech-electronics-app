@@ -18,7 +18,8 @@ export interface CategoryProps {
 }
 
 export interface ProductProps {
-  id?: string;
+  id: string;
+  slug?: string;
   name: string;
   brand: string;
   category: string;
@@ -29,7 +30,6 @@ export interface ProductProps {
   description?: string;
   specs?: Record<string, string>;
   isFeatured?: boolean;
-  quantity?: number;
 }
 
 export type PaginationUIProps = {

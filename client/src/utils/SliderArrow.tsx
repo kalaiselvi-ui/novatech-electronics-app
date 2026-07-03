@@ -14,7 +14,10 @@ const SliderArrow = ({
       });
     }
   };
-  const positionClass = direction === "right" ? "-right-5" : "-left-5";
+  const positionClass =
+    direction === "right"
+      ? "absolute right-2 top-1/2 -translate-y-1/2 z-10"
+      : "absolute left-5 top-1/2 -translate-y-1/2 z-10";
   return (
     <button
       aria-label={direction === "left" ? "Previous items" : "Next items"}

@@ -1,21 +1,26 @@
 import { useState } from "react";
 import { Menu, X, ShoppingCart, Search } from "lucide-react";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import SearchBar from "./SearchBar.tsx";
 import { assets } from "../assets/asset";
+import { useCartStore } from "../store/useCartStore.ts";
 
 const navLinks = [
   { name: "Home", href: "/" },
   { name: "Products", href: "/products" },
+  { name: "Cart", href: "/cart" },
   { name: "About", href: "/about" },
+  { name: "Contact", href: "/contact" },
 ];
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [showMobileSearch, setShowMobileSearch] = useState<boolean>(false);
+  const navigate = useNavigate();
+  const { cart } = useCartStore();
   return (
     <nav className="sticky top-0 z-50 bg-white shadow-sm border-b">
-      <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
+      <div className="mx-auto flex max-w-7xl items-center justify-between px-2 lg:px-6 py-4">
         {/* Logo */}
         <Link to="/">
           {" "}
@@ -27,7 +32,7 @@ const Navbar = () => {
         </Link>
 
         {/* Desktop Menu */}
-        <ul className="hidden items-center gap-8 md:flex">
+        <ul className="hidden items-center md:gap-4 lg:gap-6 xl:gap-8 md:flex">
           {navLinks.map((link) => (
             <li key={link.name}>
               <NavLink
@@ -45,7 +50,7 @@ const Navbar = () => {
         </ul>
 
         {/* Desktop Search Bar */}
-        <div className="hidden md:flex max-w-md w-full relative items-center">
+        <div className="hidden md:flex w-64 lg:w-96 xl:w-96 relative items-center">
           <SearchBar />
           <Search size={18} className="absolute left-3 text-textPrimary" />
           {/* <button className="absolute right-3 top-1/2 -translate-y-1/2">
@@ -84,12 +89,19 @@ const Navbar = () => {
               </button>
             )}
           </div>
-          <div className="relative">
-            <ShoppingCart size={26} className="cursor-pointer text-primary " />
+          <button
+            type="button"
+            onClick={() => navigate("/cart")}
+            className="relative"
+          >
+            <ShoppingCart
+              size={26}
+              className="cursor-pointer text-primary pointer-events-none"
+            />
             <span className="absolute h-4 w-4 rounded-full bg-secondary text-white text-xs right-0 -top-2 justify-center items-center flex">
-              2
+              {cart.length}
             </span>
-          </div>
+          </button>
 
           <button className="rounded-lg hidden md:block bg-primary px-4 py-2 text-white transition hover:opacity-90">
             Login

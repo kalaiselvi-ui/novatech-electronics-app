@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import type { ProductProps } from "../types/type.ts";
 import { Minus, Plus, ShoppingCart, Sparkles, Trash2 } from "lucide-react";
-import { useState } from "react";
+import { useCartStore } from "../store/useCartStore.ts";
 
 const ProductCard = ({
   id,
@@ -14,7 +14,16 @@ const ProductCard = ({
   category,
   isFeatured,
 }: ProductProps) => {
-  const [quantity, setQuantity] = useState(0);
+  const {
+    cart,
+    addToCart,
+    incrementQuantity,
+    decrementQuantity,
+    removeFromCart,
+  } = useCartStore();
+  const cartItem = cart.find((item) => item.id === id);
+  console.log({ cartItem });
+  const quantity = cartItem ? cartItem.quantity : 0;
   return (
     <Link
       to={`/product/${id}`}
@@ -69,9 +78,9 @@ const ProductCard = ({
         </h3>
 
         {/* Rating & Price */}
-        <div className="flex items-baseline justify-between">
-          <p className="text-2xl font-extrabold text-gray-900">${price}</p>
-          <div className="flex items-center gap-1 text-sm font-bold text-amber-500 bg-amber-50 px-2 py-0.5 rounded-md">
+        <div className="flex items-center justify-between">
+          <p className="text-base text-primary font-bold">${price}</p>
+          <div className="flex items-center gap-1 text-sm font-bold text-amber-500 px-2 rounded-md">
             <span>⭐</span>
             <span>{rating}</span>
           </div>
@@ -90,8 +99,8 @@ const ProductCard = ({
           /* State 1: Clean Outline Add to Cart Button */
           <button
             onClick={(e) => {
-              e.preventDefault(); // Prevents clicking the button from navigating the product Link
-              setQuantity(1);
+              e.preventDefault();
+              addToCart(id); // Fire global action
             }}
             className="w-full flex items-center justify-center gap-2 py-3 rounded-xl border border-gray-200 bg-transparent text-gray-700 text-sm font-semibold hover:bg-gray-900 hover:border-gray-900 hover:text-white transition-all duration-300 group-hover:border-gray-400"
           >
@@ -107,7 +116,11 @@ const ProductCard = ({
             {/* Minus / Delete Button */}
             <button
               onClick={() => {
-                setQuantity((prev) => prev - 1);
+                if (quantity === 1) {
+                  removeFromCart(id);
+                } else {
+                  decrementQuantity(id);
+                }
               }}
               className="flex items-center justify-center h-full px-4 text-white/80 hover:text-white hover:bg-white/10 transition-colors duration-200"
             >
@@ -120,14 +133,14 @@ const ProductCard = ({
 
             {/* Current Number Display */}
             <span className="font-bold text-sm select-none tracking-wide">
-              {quantity} {quantity === 1 ? "item" : "items"} added
+              {quantity} {quantity === 1 ? "item" : "items"} added{" "}
             </span>
             {/* {console.log(quantity)} */}
 
             {/* Plus Button */}
             <button
               disabled={quantity >= stock}
-              onClick={() => setQuantity((prev) => prev + 1)}
+              onClick={() => incrementQuantity(id)}
               className="flex items-center justify-center h-full px-4 text-white/80 hover:text-white hover:bg-white/10 transition-colors duration-200 disabled:opacity-30 disabled:cursor-not-allowed"
             >
               <Plus size={16} />

@@ -70,7 +70,7 @@ const Home = () => {
 
         {featuredProducts.length > 0 ? (
           /* Relative wrapper container so absolute arrows position correctly */
-          <div className="relative flex items-center">
+          <div className="relative w-full">
             {/* Left Arrow */}
             <SliderArrow direction="left" containerRef={scrollContainerRef} />
 
