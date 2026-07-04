@@ -55,4 +55,6 @@ export interface FilterState {
   includeOutOfStock: boolean;
   searchQuery?: string;
   sortBy: string;
+  setFilters: (partial: Partial<FilterState>) => void;
+  resetFilters: () => void;
 }

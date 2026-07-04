@@ -1,27 +1,26 @@
-import React, { useEffect, useState } from "react";
-import ProductCard from "./ProductCard"; // Adjust path as needed
-import type { FilterState, ProductProps } from "../types/type.ts";
+import React from "react";
+import ProductCard from "./ProductCard";
+import type { ProductProps } from "../types/type.ts";
+import { useFilterStore } from "../store/useFilterStore.ts";
 
 interface ProductGridProps {
   products: ProductProps[];
-  filters: FilterState;
-  setFilters: React.Dispatch<React.SetStateAction<FilterState>>; // We can type this strictly later
 }
 
-const ProductGrid = ({ products, filters, setFilters }: ProductGridProps) => {
-  // Handle change in the sorting dropdown
+const ProductGrid = ({ products }: ProductGridProps) => {
+  // Grab what we need for sorting directly from Zustand
+  const sortBy = useFilterStore((state) => state.sortBy);
+  const setFilters = useFilterStore((state) => state.setFilters);
+
   const handleSortChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setFilters((prev) => ({
-      ...prev,
-      sortBy: e.target.value,
-    }));
+    // You don't need setSortBy, just use partial update syntax!
+    setFilters({ sortBy: e.target.value });
   };
 
   return (
     <div className="product-grid-container">
-      {/* Top Bar for Sorting & Results Count */}
       <div className="flex justify-between items-center mb-6">
-        <span className="text-sm font-medium text-textSecondary">
+        <span className="text-sm font-medium text-textSecondary hidden md:block">
           Showing {products.length}{" "}
           {products.length === 1 ? "product" : "products"}
         </span>
@@ -35,7 +34,7 @@ const ProductGrid = ({ products, filters, setFilters }: ProductGridProps) => {
           </label>
           <select
             id="sort"
-            value={filters.sortBy}
+            value={sortBy}
             onChange={handleSortChange}
             className="border border-gray-200 rounded-lg p-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-primary"
           >
@@ -47,7 +46,6 @@ const ProductGrid = ({ products, filters, setFilters }: ProductGridProps) => {
         </div>
       </div>
 
-      {/* Actual Product Grid */}
       {products.length === 0 ? (
         <div className="text-center py-12 text-gray-500 font-medium">
           No products match your filter criteria.
@@ -57,15 +55,7 @@ const ProductGrid = ({ products, filters, setFilters }: ProductGridProps) => {
           {products.map((product) => (
             <ProductCard
               key={product.id}
-              id={product.id}
-              name={product.name}
-              brand={product.brand}
-              category={product.category}
-              price={product.price}
-              rating={product.rating}
-              stock={product.stock}
-              isFeatured={product.isFeatured}
-              // Matching your exact Home Page logic:
+              {...product}
               imageUrls={product.imageUrls}
             />
           ))}
