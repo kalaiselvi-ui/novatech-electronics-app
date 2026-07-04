@@ -7,7 +7,7 @@ const ProductCard = ({
   id,
   name,
   brand,
-  image,
+  imageUrls,
   price,
   rating,
   stock,
@@ -22,7 +22,6 @@ const ProductCard = ({
     removeFromCart,
   } = useCartStore();
   const cartItem = cart.find((item) => item.id === id);
-  console.log({ cartItem });
   const quantity = cartItem ? cartItem.quantity : 0;
   return (
     <Link
@@ -32,8 +31,7 @@ const ProductCard = ({
       {/* Product Image */}
       <div className="relative aspect-[4/3] w-full overflow-hidden">
         <img
-          src={image}
-          alt={name}
+          src={Array.isArray(imageUrls) ? imageUrls[0] : imageUrls} // <-- FIX HERE          alt={name}
           className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
         />
         {/* Floating Category Badge */}

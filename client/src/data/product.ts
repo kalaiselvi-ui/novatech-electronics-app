@@ -8,14 +8,14 @@ export const productList = [
     id: "prod-tv-01",
     name: "65 Inch QLED Q70D 4K Smart TV (2024)",
     brand: "Sony",
-    category: "TV",
+    category: "television",
     price: 2799,
     imageUrls: [
       "https://images.samsung.com/is/image/samsung/p6pim/ae/qa65q70dauxzn/gallery/ae-qled-tv-qa65q70dauxzn-front-gray-541614436?$1164_776_PNG$",
       "https://images.samsung.com/is/image/samsung/p6pim/ae/qa65q70dauxzn/gallery/ae-qled-tv-qa65q70dauxzn-r-perspective--gray-541614442?$Q90_1368_1094_F_JPG$",
       "https://images.samsung.com/is/image/samsung/p6pim/ae/qa65q70dauxzn/gallery/ae-qled-tv-qa65q70dauxzn-r-perspective--gray-541614442?$Q90_1368_1094_F_JPG$",
     ],
-    rating: 4.9,
+    rating: 3.9,
     stock: 8,
     description:
       "Our flagship QD-OLED screen powered by Cognitive Processor XR for the ultimate bright contrast.",
@@ -31,7 +31,7 @@ export const productList = [
     id: "prod-tv-02",
     name: "OLED EVO G4 Series Gallery Edition",
     brand: "LG",
-    category: "TV",
+    category: "television",
     price: 2499,
     rating: 4.8,
     stock: 12,
@@ -53,9 +53,9 @@ export const productList = [
     id: "prod-tv-03",
     name: "Neo QLED QN90D 4K Smart TV",
     brand: "Samsung",
-    category: "TV",
+    category: "television",
     price: 1899,
-    rating: 4.7,
+    rating: 3.7,
     stock: 14,
     description:
       "Quantum Matrix Technology with Mini LEDs for breathtaking details in bright rooms.",
@@ -76,7 +76,7 @@ export const productList = [
     id: "prod-tv-04",
     name: "QM8 Class Mini-LED 4K TV",
     brand: "TCL",
-    category: "TV",
+    category: "television",
     price: 1199,
     rating: 4.6,
     stock: 20,
@@ -98,7 +98,7 @@ export const productList = [
     id: "prod-tv-05",
     name: "BRAVIA 9 Mini-LED flagship",
     brand: "Sony",
-    category: "TV",
+    category: "television",
     price: 3299,
     rating: 4.9,
     stock: 5,
@@ -122,7 +122,7 @@ export const productList = [
     id: "prod-tv-06",
     name: "OLED EVO C4 Series 4K TV",
     brand: "LG",
-    category: "TV",
+    category: "television",
     price: 1599,
     rating: 4.8,
     stock: 22,
@@ -144,7 +144,7 @@ export const productList = [
     id: "prod-tv-07",
     name: "S95D QD-OLED Glare-Free TV",
     brand: "Samsung",
-    category: "TV",
+    category: "television",
     price: 2599,
     rating: 4.8,
     stock: 9,
@@ -166,10 +166,10 @@ export const productList = [
     id: "prod-tv-08",
     name: "U8K Series Mini-LED 4K",
     brand: "Hisense",
-    category: "TV",
+    category: "television",
     price: 999,
     rating: 4.5,
-    stock: 18,
+    stock: 0,
     description:
       "Quantum Dot color profile coupled with robust audio drivers built right into the frame.",
     specs: {
@@ -186,7 +186,7 @@ export const productList = [
     id: "prod-tv-09",
     name: "75 Inch QLED Q60D 4K Smart TV (2024)",
     brand: "Samsung",
-    category: "TV",
+    category: "television",
     price: 1499,
     rating: 4.6,
     stock: 11,
@@ -209,7 +209,7 @@ export const productList = [
     id: "prod-tv-10",
     name: "Samsung 65 Inch Class Neo QLED 8K QN900D 8K Smart TV 65QN900D",
     brand: "Samsung",
-    category: "TV",
+    category: "television",
     price: 4999,
     rating: 4.7,
     stock: 3,
@@ -230,7 +230,7 @@ export const productList = [
     id: "prod-tv-11",
     name: "TCL 55 Class 4-Series 4K UHD HDR LED Smart Roku TV - 55S451",
     brand: "TCL",
-    category: "TV",
+    category: "television",
     price: 299,
     rating: 4.3,
     stock: 35,
@@ -251,7 +251,7 @@ export const productList = [
     id: "prod-tv-12",
     name: "A80L OLED 4K Premium TV",
     brand: "Sony",
-    category: "TV",
+    category: "television",
     price: 1699,
     rating: 4.7,
     stock: 10,
@@ -278,7 +278,7 @@ export const productList = [
     category: "Laptops",
     price: 3199,
     rating: 4.9,
-    stock: 15,
+    stock: 0,
     description:
       "Engineered for developers, creators, and hardcore professional workloads.",
     specs: {
@@ -387,8 +387,8 @@ export const productList = [
     brand: "Razer",
     category: "Laptops",
     price: 2999,
-    rating: 4.6,
-    stock: 6,
+    rating: 4.2,
+    stock: 0,
     description:
       "Features a revolutionary dual-mode mini-LED display switching between 4K 120Hz and FHD+ 240Hz.",
     specs: {
@@ -513,7 +513,7 @@ export const productList = [
     brand: "Dell",
     category: "Laptops",
     price: 2599,
-    rating: 4.6,
+    rating: 3.7,
     stock: 5,
     description:
       "Massive 18-inch desktop replacement architecture delivering peak overclock boundaries safely.",
@@ -593,15 +593,15 @@ export const productList = [
   },
 
   // ==========================================
-  // 📱 SMARTPHONES (15 Products)
+  // 📱 SmartphonesS (15 Products)
   // ==========================================
   {
     id: "prod-phone-01",
     name: "Galaxy S24 Ultra",
     brand: "Samsung",
-    category: "Smartphone",
+    category: "Smartphones",
     price: 1299,
-    rating: 4.8,
+    rating: 3.1,
     stock: 25,
     description:
       "Welcome to mobile AI. Unleash new levels of productivity with the integrated S-Pen.",
@@ -620,7 +620,7 @@ export const productList = [
     id: "prod-phone-02",
     name: "iPhone 15 Pro Max",
     brand: "Apple",
-    category: "Smartphone",
+    category: "Smartphones",
     price: 1199,
     imageUrls: [
       "https://i.ebayimg.com/images/g/AuoAAOSw7HFn7-A-/s-l1600.webp",
@@ -642,7 +642,7 @@ export const productList = [
     id: "prod-phone-03",
     name: "Pixel 8 Pro",
     brand: "Google",
-    category: "Smartphone",
+    category: "Smartphones",
     price: 999,
     imageUrls: [
       "https://i.ebayimg.com/images/g/FngAAOSwTuVmO0G7/s-l1600.webp",
@@ -652,7 +652,7 @@ export const productList = [
     rating: 4.6,
     stock: 22,
     description:
-      "The best computational smartphone photography array backed by Google's Tensor G3 chip.",
+      "The best computational Smartphones photography array backed by Google's Tensor G3 chip.",
     specs: {
       Processor: "Google Tensor G3",
       Camera: "50MP Triple",
@@ -664,10 +664,10 @@ export const productList = [
     id: "prod-phone-04",
     name: "OnePlus 12 5G",
     brand: "OnePlus",
-    category: "Smartphone",
+    category: "Smartphones",
     price: 799,
     rating: 4.7,
-    stock: 19,
+    stock: 0,
     description:
       "Flagship specifications meeting hyper-charging technology that fuels full battery grids within 26 minutes.",
     specs: {
@@ -686,7 +686,7 @@ export const productList = [
     id: "prod-phone-05",
     name: "X100 Pro Photography Flagship",
     brand: "Vivo",
-    category: "Smartphone",
+    category: "Smartphones",
     price: 949,
     rating: 4.8,
     stock: 12,
@@ -706,9 +706,9 @@ export const productList = [
     id: "prod-phone-06",
     name: "ROG Phone 8 Ultimate Gaming",
     brand: "ASUS",
-    category: "Smartphone",
+    category: "Smartphones",
     price: 1199,
-    rating: 4.7,
+    rating: 3.4,
     stock: 8,
     description:
       "Dedicated gaming phone built with customizable pressure trigger edges and cooling fan bypass rails.",
@@ -728,10 +728,10 @@ export const productList = [
     id: "prod-phone-07",
     name: "Razr+ 2024 Foldable",
     brand: "Motorola",
-    category: "Smartphone",
+    category: "Smartphones",
     price: 999,
     rating: 4.5,
-    stock: 14,
+    stock: 0,
     description:
       "Industry's largest, most functional interactive cover screen on a flip-style folding phone.",
     specs: {
@@ -749,7 +749,7 @@ export const productList = [
     id: "prod-phone-08",
     name: "Xperia 1 VI Creator Phone",
     brand: "Sony",
-    category: "Smartphone",
+    category: "Smartphones",
     price: 1399,
     rating: 4.6,
     stock: 7,
@@ -770,7 +770,7 @@ export const productList = [
     id: "prod-phone-09",
     name: "14 Ultra Leica Flagship",
     brand: "Xiaomi",
-    category: "Smartphone",
+    category: "Smartphones",
     price: 1249,
     rating: 4.9,
     stock: 10,
@@ -792,7 +792,7 @@ export const productList = [
     id: "prod-phone-10",
     name: "Galaxy Z Fold 6",
     brand: "Samsung",
-    category: "Smartphone",
+    category: "Smartphones",
     price: 1899,
     rating: 4.7,
     stock: 15,
@@ -812,7 +812,7 @@ export const productList = [
     id: "prod-phone-11",
     name: "iPhone 15 Standard",
     brand: "Apple",
-    category: "Smartphone",
+    category: "Smartphones",
     price: 799,
     rating: 4.5,
     stock: 40,
@@ -829,7 +829,7 @@ export const productList = [
     id: "prod-phone-12",
     name: "Nothing Phone (2)",
     brand: "Nothing",
-    category: "Smartphone",
+    category: "Smartphones",
     price: 599,
     rating: 4.6,
     stock: 25,
@@ -849,10 +849,10 @@ export const productList = [
     id: "prod-phone-13",
     name: "Edge+ Premium 2024",
     brand: "Motorola",
-    category: "Smartphone",
+    category: "Smartphones",
     price: 699,
     rating: 4.4,
-    stock: 18,
+    stock: 0,
     description:
       "Quad-curved display tracking a fluid 165Hz frame presentation rate effortlessly.",
     specs: {
@@ -869,9 +869,9 @@ export const productList = [
     id: "prod-phone-14",
     name: "Nord 4 Midrange King",
     brand: "OnePlus",
-    category: "Smartphone",
+    category: "Smartphones",
     price: 449,
-    rating: 4.4,
+    rating: 2.5,
     stock: 30,
     description:
       "Full metal unibody design offering high durability and long-term fluid operational performance.",
@@ -890,13 +890,13 @@ export const productList = [
     id: "prod-phone-15",
     name: "Galaxy A55 5G Midtier",
     brand: "Samsung",
-    category: "Smartphone",
+    category: "Smartphones",
     price: 399,
     imageUrls: ["https://i.ebayimg.com/images/g/64sAAOSwMORl-Bj8/s-l1600.webp"],
     rating: 4.3,
     stock: 35,
     description:
-      "Secure, reliable, water-resistant everyday smartphone with strong expandable storage options.",
+      "Secure, reliable, water-resistant everyday Smartphones with strong expandable storage options.",
     specs: {
       Processor: "Exynos 1480",
       Display: "120Hz Super AMOLED",
@@ -914,7 +914,7 @@ export const productList = [
     category: "Headphones",
     price: 398,
     rating: 4.7,
-    stock: 40,
+    stock: 0,
     description:
       "Industry-leading noise cancellation automatically calibrated based on user posture and ambient shifts.",
     specs: {
@@ -981,7 +981,7 @@ export const productList = [
     brand: "Audeze",
     category: "Headphones",
     price: 299,
-    rating: 4.7,
+    rating: 2.8,
     stock: 12,
     description:
       "Studio-tier ultra-fast response 90mm planar magnetic drivers built for audiophile game tracking filters.",
@@ -1079,7 +1079,7 @@ export const productList = [
     brand: "Sony",
     category: "Headphones",
     price: 299,
-    rating: 4.6,
+    rating: 3.7,
     stock: 35,
     description:
       "Real-time audio processing processors feeding customized sound seals across high and low frequency thresholds.",
@@ -1179,7 +1179,7 @@ export const productList = [
     brand: "Sonos",
     category: "Speaker",
     price: 449,
-    rating: 4.6,
+    rating: 3.9,
     stock: 14,
     description:
       "Six drivers intelligently dispersed to reflect custom spatial soundscapes off walls and ceilings flawlessly.",
@@ -1254,7 +1254,7 @@ export const productList = [
     brand: "JBL",
     category: "Speaker",
     price: 449,
-    rating: 4.6,
+    rating: 4.3,
     stock: 10,
     description:
       "Striking 1970s Quadrex grille styling backed by modern twin smart voice assistants running concurrently.",
@@ -1332,7 +1332,7 @@ export const productList = [
     brand: "Sonos",
     category: "Speaker",
     price: 179,
-    rating: 4.4,
+    rating: 4.1,
     stock: 33,
     description:
       "Lightweight premium speaker route passing automatic layout updates across WiFi and mobile Bluetooth feeds.",
@@ -1450,7 +1450,7 @@ export const productList = [
     brand: "Panasonic",
     category: "Camera",
     price: 1999,
-    rating: 4.6,
+    rating: 3.6,
     stock: 10,
     description:
       "Upgraded phase-detection autofocus engine combined with elite active image stabilization handles.",
@@ -1528,7 +1528,7 @@ export const productList = [
     brand: "Canon",
     category: "Camera",
     price: 679,
-    rating: 4.4,
+    rating: 3.9,
     stock: 20,
     description:
       "Lightweight content creation kit that tracks eyes and product details smoothly for online video streaming.",
@@ -1588,7 +1588,7 @@ export const productList = [
     category: "Camera",
     price: 699,
     rating: 4.6,
-    stock: 22,
+    stock: 0,
     description:
       "Large sensor vlogging layout driving instant background bokeh defocus sliders on demand.",
     specs: {
@@ -1628,7 +1628,7 @@ export const productList = [
     brand: "Samsung",
     category: "Smart Watches",
     price: 649,
-    rating: 4.6,
+    rating: 2.3,
     stock: 15,
     description:
       "Advanced biomechanical health engine analyzing metabolic markers and sleep fitness deep states.",
@@ -1809,7 +1809,7 @@ export const productList = [
     brand: "Microsoft",
     category: "Gaming",
     price: 599,
-    rating: 4.8,
+    rating: 2.4,
     stock: 8,
     description:
       "The fastest, most power-dense Xbox architecture ever deployed with custom solid state drives.",
@@ -1896,7 +1896,7 @@ export const productList = [
     category: "Gaming",
     price: 449,
     rating: 4.7,
-    stock: 30,
+    stock: 0,
     description:
       "Streamlined console silhouette maximizing layout spaces while maintaining identical rendering pipelines.",
     specs: {

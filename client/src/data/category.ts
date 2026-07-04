@@ -48,12 +48,12 @@ export const heroSlides = [
 ];
 
 export const categories = [
-  { name: "Phones", image: assets.phone, slug: "phones" },
-  { name: "Laptops", image: assets.laptop, slug: "laptop" },
+  { name: "Smartphones", image: assets.phone, slug: "smartphones" },
+  { name: "Laptops", image: assets.laptop, slug: "laptops" },
   { name: "Television", image: assets.television, slug: "television" },
-  { name: "Headphones", image: assets.headPhone, slug: "headphone" },
-  { name: "Smart Watches", image: assets.smart_watch, slug: "smart-watch" },
-  { name: "Cameras", image: assets.camera, slug: "camera" },
+  { name: "Headphones", image: assets.headPhone, slug: "headphones" },
+  { name: "Smart Watches", image: assets.smart_watch, slug: "smart-watches" },
+  { name: "Camera", image: assets.camera, slug: "camera" },
   { name: "Gaming", image: assets.gaming, slug: "gaming" },
-  { name: "Accessories", image: assets.speaker, slug: "speaker" },
+  { name: "Accessories", image: assets.speaker, slug: "accessories" },
 ];

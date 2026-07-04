@@ -87,7 +87,7 @@ const Home = () => {
                   <ProductCard
                     id={list.id}
                     name={list.name}
-                    image={list.imageUrls[0]}
+                    imageUrls={list.imageUrls}
                     brand={list.brand}
                     category={list.category}
                     rating={list.rating}
@@ -125,7 +125,7 @@ const Home = () => {
               <ProductCard
                 id={list.id}
                 name={list.name}
-                image={list.imageUrls[0]}
+                imageUrls={list.imageUrls}
                 brand={list.brand}
                 category={list.category}
                 rating={list.rating}

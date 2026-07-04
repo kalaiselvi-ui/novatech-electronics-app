@@ -24,11 +24,11 @@ export interface ProductProps {
   brand: string;
   category: string;
   price: number;
-  image: string;
+  imageUrls: string[];
   rating?: number;
   stock: number;
   description?: string;
-  specs?: Record<string, string>;
+  specs?: Record<string, any>;
   isFeatured?: boolean;
 }
 
@@ -46,4 +46,13 @@ export interface SliderArrowProps {
   direction: "left" | "right";
   containerRef: RefObject<HTMLDivElement | null>;
   scrollAmount?: number;
+}
+
+export interface FilterState {
+  selectedCategories: string[];
+  maxPrice: number;
+  minRating: number;
+  includeOutOfStock: boolean;
+  searchQuery?: string;
+  sortBy: string;
 }
