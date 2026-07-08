@@ -1,7 +1,10 @@
+import { useSearchParams } from "react-router-dom";
 import { categories } from "../data/category.ts";
 import { useFilterStore } from "../store/useFilterStore.ts";
+import { useEffect } from "react";
 
 const FilterSidebar = () => {
+  const [searchParams, setSearchParams] = useSearchParams();
   // Pull state and the setter function from Zustand
   const {
     selectedCategories,
@@ -17,18 +20,41 @@ const FilterSidebar = () => {
     const lowerSlug = slug.toLowerCase();
     const isAlreadySelected = selectedCategories.includes(lowerSlug);
 
-    setFilters({
-      selectedCategories: isAlreadySelected
-        ? selectedCategories.filter((c) => c !== lowerSlug)
-        : [...selectedCategories, lowerSlug],
-    });
+    const nextCategories = isAlreadySelected
+      ? selectedCategories.filter((c) => c !== lowerSlug)
+      : [...selectedCategories, lowerSlug];
+
+    setFilters({ selectedCategories: nextCategories });
+
+    const newParams = new URLSearchParams(searchParams);
+
+    if (nextCategories.length > 0) {
+      newParams.set("category", nextCategories.join(","));
+    } else {
+      newParams.delete("category");
+    }
+
+    setSearchParams(newParams);
+  };
+
+  useEffect(() => {
+    const categoryParam = searchParams.get("category");
+    if (categoryParam) {
+      const urlCategories = categoryParam.toLowerCase().split(",");
+      setFilters({ selectedCategories: urlCategories });
+    }
+  }, []);
+
+  const handleClearAll = () => {
+    resetFilters();
+    setSearchParams({});
   };
 
   return (
     <div className="filter-sidebar flex flex-col space-y-4 border p-6 rounded-lg">
       <h3>Filters</h3>
       <button
-        onClick={resetFilters}
+        onClick={handleClearAll}
         className="bg-primary text-white rounded-md py-1"
       >
         Clear Filters
@@ -59,7 +85,7 @@ const FilterSidebar = () => {
         <input
           type="range"
           min="0"
-          max="2000"
+          max="5000"
           style={{ width: "100%" }}
           value={maxPrice}
           onChange={(e) => setFilters({ maxPrice: Number(e.target.value) })}

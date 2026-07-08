@@ -53,7 +53,7 @@ export interface FilterState {
   maxPrice: number;
   minRating: number;
   includeOutOfStock: boolean;
-  searchQuery?: string;
+  searchQuery: string;
   sortBy: string;
   setFilters: (partial: Partial<FilterState>) => void;
   resetFilters: () => void;

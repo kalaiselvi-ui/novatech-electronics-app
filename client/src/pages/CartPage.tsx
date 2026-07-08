@@ -1,11 +1,10 @@
 import { useCartStore } from "../store/useCartStore.ts";
 import { productList } from "../data/product.ts";
 import { ArrowRight, Trash } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const CartPage = () => {
-  // const [quantity, setQuantity] = useState(1);
-
+  const navigate = useNavigate();
   const {
     cart: cartItems,
     incrementQuantity,
@@ -147,7 +146,10 @@ const CartPage = () => {
             </span>
           </div>
 
-          <button className="w-full bg-primary duration-100 text-white py-3 rounded-lg font-semibold hover:bg-primary/80 transition-colors shadow-md">
+          <button
+            onClick={() => navigate("/checkout")}
+            className="w-full bg-primary duration-100 text-white py-3 rounded-lg font-semibold hover:bg-primary/80 transition-colors shadow-md"
+          >
             Proceed to Checkout
           </button>
         </div>

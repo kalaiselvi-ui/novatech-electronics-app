@@ -37,7 +37,7 @@ export const usePagination = <T>({
   const goToPage = (page: number) => {
     const pageNumber = Math.max(1, Math.min(page, totalPages));
     setCurrentPage(pageNumber);
-    window.scrollTo({ top: 500, behavior: "smooth" });
+    window.scrollTo({ top: 1500, behavior: "smooth" });
   };
 
   return {

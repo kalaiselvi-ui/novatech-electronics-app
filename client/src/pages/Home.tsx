@@ -82,7 +82,7 @@ const Home = () => {
               {featuredProducts.map((list) => (
                 <div
                   key={list.id}
-                  className="min-w-[280px] sm:min-w-[300px] max-w-[300px] snap-start"
+                  className="flex-shrink-0 snap-start w-[calc(85%-12px)] sm:w-[calc(45%-12px)] md:w-[calc(33.333%-12px)] lg:w-[calc(20%-12px)]"
                 >
                   <ProductCard
                     id={list.id}
@@ -119,7 +119,7 @@ const Home = () => {
           </h2>
           <div className="w-16 h-1 bg-gradient-to-r from-primary to-secondary mx-auto rounded-full opacity-80" />
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 xl:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-5 gap-4">
           {displayedProducts.map((list) => (
             <div key={list.id}>
               <ProductCard

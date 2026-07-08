@@ -1,9 +1,11 @@
 import { useState } from "react";
-import { Menu, X, ShoppingCart, Search } from "lucide-react";
+import { Menu, X, ShoppingCart, Search, User2Icon } from "lucide-react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import SearchBar from "./SearchBar.tsx";
 import { assets } from "../assets/asset";
 import { useCartStore } from "../store/useCartStore.ts";
+import AuthModal from "./auth/AuthModal.tsx";
+import { useBodyScrollLock } from "../utils/useBodyScrollLock.ts";
 
 const navLinks = [
   { name: "Home", href: "/" },
@@ -16,8 +18,19 @@ const navLinks = [
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [showMobileSearch, setShowMobileSearch] = useState<boolean>(false);
+  const [showUserMenu, setShowUserMenu] = useState(false);
+  const [isAuthOpen, setIsAuthOpen] = useState(false);
   const navigate = useNavigate();
   const { cart } = useCartStore();
+
+  const user = {
+    name: "kalai",
+    role: "admin",
+  };
+  // const user = null;
+
+  useBodyScrollLock(isAuthOpen);
+
   return (
     <nav className="sticky top-0 z-50 bg-white shadow-sm border-b">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-2 lg:px-6 py-4">
@@ -103,9 +116,60 @@ const Navbar = () => {
             </span>
           </button>
 
-          <button className="rounded-lg hidden md:block bg-primary px-4 py-2 text-white transition hover:opacity-90">
-            Login
-          </button>
+          <div className="relative hidden md:block">
+            {!user ? (
+              <button
+                onClick={() => setIsAuthOpen(true)}
+                className="rounded-lg bg-primary px-4 py-2 text-white transition hover:opacity-90"
+              >
+                Login
+              </button>
+            ) : (
+              <div className="relative group flex items-center gap-1 py-2 cursor-pointer">
+                {/* The Icon & Username - They automatically turn text-secondary on hover */}
+                <User2Icon className="text-primary w-6 h-6 group-hover:text-secondary transition-colors" />
+                <span className="font-medium text-gray-700 group-hover:text-secondary transition-colors">
+                  {user.name}
+                </span>
+
+                {/* Dropdown Menu - Controlled completely via Tailwind group-hover */}
+                <div className="absolute right-0 top-full mt-1 w-48 rounded-lg border bg-white shadow-lg overflow-hidden hidden group-hover:block z-50">
+                  <NavLink
+                    to="/profile"
+                    className="block px-4 py-2 hover:bg-gray-100"
+                  >
+                    Profile
+                  </NavLink>
+
+                  <NavLink
+                    to="/orders"
+                    className="block px-4 py-2 hover:bg-gray-100"
+                  >
+                    Orders
+                  </NavLink>
+
+                  {user.role === "admin" && (
+                    <NavLink
+                      to="/admin"
+                      className="block px-4 py-2 hover:bg-gray-100 text-red-600"
+                    >
+                      Admin Dashboard
+                    </NavLink>
+                  )}
+
+                  <button
+                    onClick={() => {
+                      // logout logic later
+                    }}
+                    className="w-full text-left px-4 py-2 hover:bg-gray-100 text-red-500"
+                  >
+                    Logout
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
+          <AuthModal isOpen={isAuthOpen} onClose={() => setIsAuthOpen(false)} />
           {/* Mobile Button */}
           <button
             className="md:hidden"
@@ -138,9 +202,56 @@ const Navbar = () => {
               </li>
             ))}
 
-            <button className="m-4 rounded-lg bg-primary py-3 text-white">
-              Login
-            </button>
+            {!user ? (
+              <button
+                onClick={() => setIsAuthOpen(true)}
+                className="m-4 rounded-lg bg-primary py-3 text-white"
+              >
+                Login
+              </button>
+            ) : (
+              <div className="flex flex-col">
+                <div className="px-6 py-3 font-semibold border-b">
+                  {user.name}
+                </div>
+
+                <NavLink
+                  to="/profile"
+                  className="px-6 py-3 border-b"
+                  onClick={() => setIsOpen(false)}
+                >
+                  Profile
+                </NavLink>
+
+                <NavLink
+                  to="/orders"
+                  className="px-6 py-3 border-b"
+                  onClick={() => setIsOpen(false)}
+                >
+                  Orders
+                </NavLink>
+
+                {user.role === "admin" && (
+                  <NavLink
+                    to="/admin"
+                    className="px-6 py-3 border-b text-red-600"
+                    onClick={() => setIsOpen(false)}
+                  >
+                    Admin Dashboard
+                  </NavLink>
+                )}
+
+                <button
+                  onClick={() => {
+                    // logout logic later
+                    setShowUserMenu(false);
+                  }}
+                  className="m-4 rounded-lg bg-red-500 py-3 text-white"
+                >
+                  Logout
+                </button>
+              </div>
+            )}
           </ul>
         </div>
       )}

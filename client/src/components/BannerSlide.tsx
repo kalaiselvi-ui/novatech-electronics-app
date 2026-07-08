@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import type { SlideData } from "../types/type.ts";
 
 const BannerSlide = ({
@@ -9,6 +10,7 @@ const BannerSlide = ({
   secondaryBtn,
   bgColor,
 }: SlideData) => {
+  const navigate = useNavigate();
   return (
     <div
       style={{ backgroundColor: bgColor }}
@@ -22,6 +24,7 @@ const BannerSlide = ({
 
         <div className="flex gap-4 mt-4">
           <button
+            onClick={() => navigate("/products")}
             className="rounded-xl border border-primary bg-primary px-7 py-3
   font-semibold text-white
   transition-all duration-300
@@ -32,6 +35,7 @@ const BannerSlide = ({
           </button>
 
           <button
+            onClick={() => navigate("/products")}
             className="rounded-lg border border-primary px-6 py-3 font-medium text-primary
   transition-all duration-300
   hover:border-secondary
