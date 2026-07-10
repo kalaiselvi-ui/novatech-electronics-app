@@ -1,15 +1,6 @@
 // pages/AdminOrdersPage.tsx
-import React, { useState } from "react";
-import {
-  Eye,
-  Package,
-  Calendar,
-  DollarSign,
-  CheckCircle,
-  Clock,
-  AlertTriangle,
-  ArrowLeft,
-} from "lucide-react";
+import { useState } from "react";
+import { Eye, Package, ArrowLeft } from "lucide-react";
 import { usePagination } from "../../hooks/usePagination.ts";
 import Pagination from "../../components/Pagination.tsx";
 

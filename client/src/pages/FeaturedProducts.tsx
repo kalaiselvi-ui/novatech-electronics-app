@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { shuffleArray } from "../utils/shuffle.ts";
 import { productList } from "../data/product.ts";
 import ProductCard from "../components/ProductCard.tsx";

@@ -1,5 +1,5 @@
 // components/ProductForm.tsx
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef } from "react";
 import { Upload, X, PackagePlus, Edit } from "lucide-react";
 import InputField from "./InputField";
 

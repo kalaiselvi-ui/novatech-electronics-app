@@ -1,5 +1,5 @@
 // pages/AdminProductsPage.tsx
-import React, { useState } from "react";
+import { useState } from "react";
 import { Edit2, Trash2, Plus, Package, Image as ImageIcon } from "lucide-react";
 import ProductForm, {
   type ProductType,
@@ -63,18 +63,18 @@ const Products = () => {
     setIsFormOpen(true);
   };
 
-  const handleOpenEditForm = (product: ProductItem) => {
-    setEditingProduct({
-      id: product.id,
-      name: product.name,
-      description: product.description,
-      category: product.category,
-      price: product.price,
-      stock: product.stock,
-      image: product.image,
-    });
-    setIsFormOpen(true);
-  };
+  // const handleOpenEditForm = (product: ProductItem) => {
+  //   setEditingProduct({
+  //     id: product.id,
+  //     name: product.name,
+  //     description: product.description,
+  //     category: product.category,
+  //     price: product.price,
+  //     stock: product.stock,
+  //     image: product.image,
+  //   });
+  //   setIsFormOpen(true);
+  // };
 
   const handleDeleteProduct = (id: string) => {
     if (window.confirm("Are you sure you want to delete this product?")) {
@@ -257,7 +257,6 @@ const Products = () => {
                       <td className="px-1 py-3 md:px-6 md:py-4 text-right whitespace-nowrap">
                         <div className="flex justify-end gap-1.5">
                           <button
-                            onClick={() => handleOpenEditForm(product.id)}
                             title="Edit Item Details"
                             className="p-1.5 text-gray-500 hover:text-primary rounded-lg hover:bg-blue-50 transition"
                           >

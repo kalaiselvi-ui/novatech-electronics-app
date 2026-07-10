@@ -1,4 +1,3 @@
-import React from "react";
 import { PlusCircle, ShoppingBag, UserPlus, RefreshCw } from "lucide-react";
 
 // Mock log feed data

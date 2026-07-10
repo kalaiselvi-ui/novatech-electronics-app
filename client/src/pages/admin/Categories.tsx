@@ -3,12 +3,6 @@ import { Upload, X, Folder } from "lucide-react";
 import InputField from "../../components/InputField.tsx";
 import { categories } from "../../data/category.ts";
 
-interface CategoryItem {
-  id: string;
-  name: string;
-  image: string | null; // This will hold the local preview URL or production image URL
-}
-
 export default function CategoriesPage() {
   // Existing Form State
   const [categoryName, setCategoryName] = useState("");
@@ -20,6 +14,7 @@ export default function CategoriesPage() {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
       setImageFile(file);
+      console.log(imageFile);
       setImagePreview(URL.createObjectURL(file));
     }
   };
@@ -29,11 +24,11 @@ export default function CategoriesPage() {
     e.preventDefault();
     if (!categoryName.trim()) return;
 
-    const newCategory: CategoryItem = {
-      id: Date.now().toString(),
-      name: categoryName,
-      image: imagePreview, // Save the image preview URL locally for now
-    };
+    // const newCategory: CategoryItem = {
+    //   id: Date.now().toString(),
+    //   name: categoryName,
+    //   image: imagePreview, // Save the image preview URL locally for now
+    // };
 
     // setCategories([...categories, newCategory]);
 
@@ -44,8 +39,9 @@ export default function CategoriesPage() {
     if (fileInputRef.current) fileInputRef.current.value = "";
   };
 
-  const handleRemoveCategory = (id: string) => {
+  const handleRemoveCategory = (slug: string) => {
     // setCategories(categories.filter((cat) => cat.id !== id));
+    console.log(slug);
   };
   return (
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
@@ -159,7 +155,7 @@ export default function CategoriesPage() {
                 {/* Delete category item button */}
                 <button
                   type="button"
-                  onClick={() => handleRemoveCategory(category.id)}
+                  onClick={() => handleRemoveCategory(category.slug)}
                   className="text-gray-400 hover:text-red-500 p-1.5 rounded-lg hover:bg-red-50 transition"
                 >
                   <X size={18} />

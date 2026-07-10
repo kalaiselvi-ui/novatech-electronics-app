@@ -9,6 +9,7 @@ import Categories from "./pages/admin/Categories.tsx";
 import Orders from "./pages/admin/Orders.tsx";
 import MyProfile from "./pages/MyProfile.tsx";
 import MyOrders from "./pages/Orders.tsx";
+import { ResetPassword } from "./components/auth/ResetPassword.tsx";
 
 const Home = lazy(() => import("./pages/Home.tsx"));
 const FeaturedProducts = lazy(() => import("./pages/FeaturedProducts.tsx"));
@@ -34,6 +35,7 @@ const App = () => {
             <Route path="/checkout" element={<Checkout />} />
             <Route path="/profile" element={<MyProfile />} />
             <Route path="/orders" element={<MyOrders />} />
+            <Route path="/reset-password" element={<ResetPassword />} />
           </Route>
           <Route path="/admin" element={<AdminLayout />}>
             <Route index element={<Dashboard />} />

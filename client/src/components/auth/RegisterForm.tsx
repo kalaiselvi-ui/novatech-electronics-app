@@ -6,6 +6,54 @@ const RegisterForm = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
+  // const [formData, setFormData] = useState<RegisterFormData>({
+  //   username: "",
+  //   email: "",
+  //   password: "",
+  //   confirmPassword: "",
+  // });
+
+  // 2. Error State (Stores errors as key-value pairs: e.g. { email: "Invalid email" })
+  // const [errors, setErrors] = useState<Record<string, string>>({});
+
+  // const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   setFormData({
+  //     ...formData,
+  //     [e.target.name]: e.target.value,
+  //   });
+  // };
+
+  // const handleSubmit = (e: React.FormEvent) => {
+  //   e.preventDefault();
+
+  //   // 3. Validate with Zod
+  //   const result = registerSchema.safeParse(formData);
+
+  //   if (!result.success) {
+  //     // Convert Zod error array into a simple key-value object
+  //     const formattedErrors: Record<string, string> = {};
+
+  //     result.error.issues.forEach((issue) => {
+  //       const fieldName = issue.path[0] as string;
+  //       if (fieldName && !formattedErrors[fieldName]) {
+  //         formattedErrors[fieldName] = issue.message;
+  //       }
+  //     });
+
+  //     setErrors(formattedErrors);
+  //     return;
+  //   }
+
+  //   // Clear errors if valid
+  //   setErrors({});
+
+  //   // 4. Omit confirmPassword before sending payload to backend
+  //   const { confirmPassword, ...payload } = result.data;
+
+  //   console.log("Form submitted successfully:", payload);
+  //   // await api.post('/auth/register', payload);
+  // };
+
   return (
     <form className="space-y-2">
       {/* Full Name */}

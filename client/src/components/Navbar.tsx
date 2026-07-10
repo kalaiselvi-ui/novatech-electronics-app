@@ -27,9 +27,9 @@ const Navbar = () => {
     name: "kalai",
     role: "admin",
   };
-  // const user = null;
 
   useBodyScrollLock(isAuthOpen);
+  console.log(showUserMenu);
 
   return (
     <nav className="sticky top-0 z-50 bg-white shadow-sm border-b">

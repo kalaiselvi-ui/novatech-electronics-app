@@ -1,4 +1,3 @@
-import React from "react";
 import ShippingForm from "../components/checkout/ShippingForm";
 import OrderSummary from "../components/checkout/OrderSummary";
 import { CreditCard, Banknote } from "lucide-react";

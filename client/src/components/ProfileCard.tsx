@@ -1,5 +1,4 @@
 import { Pencil } from "lucide-react";
-import { useState } from "react";
 
 type ProfileCardProps = {
   firstName: string;
