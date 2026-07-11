@@ -143,7 +143,7 @@ const ProductCard = ({
           {/* Price & Rating Layout */}
           <div className="flex items-baseline justify-between">
             <div className="flex items-baseline gap-1">
-              <span className="text-xs font-bold text-gray-400">AED</span>
+              <span className="text-xs font-bold text-gray-400">$</span>
               <p className="text-xl font-black text-gray-900 tracking-tight">
                 {price}
               </p>

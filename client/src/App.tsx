@@ -10,6 +10,7 @@ import Orders from "./pages/admin/Orders.tsx";
 import MyProfile from "./pages/MyProfile.tsx";
 import MyOrders from "./pages/Orders.tsx";
 import { ResetPassword } from "./components/auth/ResetPassword.tsx";
+import { Toaster } from "react-hot-toast";
 
 const Home = lazy(() => import("./pages/Home.tsx"));
 const FeaturedProducts = lazy(() => import("./pages/FeaturedProducts.tsx"));
@@ -23,6 +24,7 @@ const App = () => {
   return (
     <>
       <Suspense fallback={<LoadingSpinner />}>
+        <Toaster position="top-right" reverseOrder={false} />
         <Routes>
           <Route path="/" element={<MainLayout />}>
             <Route index element={<Home />} />

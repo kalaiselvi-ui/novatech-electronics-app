@@ -1,3 +1,4 @@
+import cloudinary from "../config/cloudinary.js";
 import Category from "../models/categorySchema.js";
 import { uploadToCloudinary } from "../utils/upload.js";
 
@@ -66,7 +67,6 @@ const updateCategory = async (req, res) => {
 const getAllCategory = async (req, res) => {
   try {
     const categories = await Category.find();
-    console.log(categories);
     return res.status(200).json({ success: true, data: categories });
   } catch (err) {
     console.log(err);

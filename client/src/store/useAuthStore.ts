@@ -1,20 +1,32 @@
 import { create } from "zustand";
 import type { AuthState } from "../types/auth.type.ts";
+import { createJSONStorage, persist } from "zustand/middleware";
 
-export interface User {
-  id: string;
-  email: string;
-  name?: string;
-}
-
-export const useAuthStore = create<AuthState>((set) => ({
-  user: null,
-  isAuthenticated: false,
-  currentView: "login",
-  setView: (view) => set({ currentView: view }),
-  setUser: (user) => set({ user, isAuthenticated: true }),
-  logout: () => {
-    set({ user: null, isAuthenticated: false });
-    localStorage.removeItem("token");
-  },
-}));
+export const useAuthStore = create<AuthState>()(
+  persist(
+    (set) => ({
+      user: null,
+      isAuthenticated: false,
+      isAuthModalOpen: false,
+      openAuthModal: (view = "login") =>
+        set({ isAuthModalOpen: true, currentView: view }),
+      closeAuthModal: () =>
+        set({ isAuthModalOpen: false, currentView: "login" }),
+      currentView: "login",
+      setView: (view) => set({ currentView: view }),
+      setUser: (user) => set({ user, isAuthenticated: true }),
+      logout: () => {
+        set({ user: null, isAuthenticated: false, currentView: "login" });
+        localStorage.removeItem("token");
+      },
+    }),
+    {
+      name: "auth-storage", // Unique key in localStorage
+      storage: createJSONStorage(() => localStorage),
+      partialize: (state: AuthState) => ({
+        user: state.user,
+        isAuthenticated: state.isAuthenticated,
+      }),
+    },
+  ),
+);

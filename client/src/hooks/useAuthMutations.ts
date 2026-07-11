@@ -1,19 +1,23 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   forgotPasswordApi,
   googleLoginApi,
   loginApi,
+  logoutApi,
   registerApi,
+  resetPasswordApi,
 } from "../api/authApi.ts";
 import { useAuthStore } from "../store/useAuthStore.ts";
 
 export const useAuthMutations = () => {
   const setUser = useAuthStore((state) => state.setUser);
+  const logout = useAuthStore((state) => state.logout);
+  const queryClient = useQueryClient();
 
   const loginMutation = useMutation({
     mutationFn: loginApi,
     onSuccess: (data) => {
-      setUser(data);
+      setUser(data.user);
     },
   });
   // 2. Register Mutation Hook
@@ -25,8 +29,31 @@ export const useAuthMutations = () => {
   });
 
   // 2. Register Mutation Hook
+  const logoutMutation = useMutation({
+    mutationFn: logoutApi,
+    onSuccess: () => {
+      logout();
+      queryClient.clear();
+    },
+    onError: (error) => {
+      // Fallback: Clear local session even if server request fails
+      logout();
+      queryClient.clear();
+      console.error("Logout error:", error);
+    },
+  });
+
+  // 2. Register Mutation Hook
   const forgotPasswordMutation = useMutation({
     mutationFn: forgotPasswordApi,
+  });
+
+  // 2. Register Mutation Hook
+  const resetPasswordMutation = useMutation({
+    mutationFn: resetPasswordApi,
+    onSuccess: (data) => {
+      setUser(data);
+    },
   });
 
   const googleLoginMutation = useMutation({
@@ -41,5 +68,7 @@ export const useAuthMutations = () => {
     registerMutation,
     forgotPasswordMutation,
     googleLoginMutation,
+    resetPasswordMutation,
+    logoutMutation,
   };
 };

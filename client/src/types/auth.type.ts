@@ -2,9 +2,11 @@ export type ViewState = "login" | "register" | "forgot-password";
 
 // Define strict types for the user data payload
 export interface User {
-  id: string;
+  _id?: string;
+  id?: string;
   email: string;
-  name?: string;
+  username?: string;
+  role?: string;
 }
 
 export interface ForgotPasswordPayload {
@@ -14,8 +16,11 @@ export interface ForgotPasswordPayload {
 export type AuthState = {
   user: User | null;
   isAuthenticated: boolean;
+  isAuthModalOpen: boolean;
   currentView: ViewState; // Track which screen is showing
   setView: (view: ViewState) => void; // Action to switch screens
   setUser: (user: User) => void;
   logout: () => void;
+  closeAuthModal: () => void;
+  openAuthModal: (view?: ViewState) => void;
 };

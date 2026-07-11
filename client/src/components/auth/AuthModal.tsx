@@ -1,19 +1,18 @@
-import { useState } from "react";
 import { X } from "lucide-react";
 import LoginForm from "./LoginForm";
 import RegisterForm from "./RegisterForm";
-import type { ViewState } from "../../types/auth.type.ts";
 import ForgotPasswordForm from "./ForgotPassword.tsx";
+import { useAuthStore } from "../../store/useAuthStore.ts";
 
-interface AuthModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-}
+const AuthModal = () => {
+  // const [view, setView] = useState<ViewState>("login");
 
-const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
-  const [view, setView] = useState<ViewState>("login");
+  const isAuthModalOpen = useAuthStore((state) => state.isAuthModalOpen);
+  const currentView = useAuthStore((state) => state.currentView);
+  const setView = useAuthStore((state) => state.setView);
+  const closeAuthModal = useAuthStore((state) => state.closeAuthModal);
 
-  if (!isOpen) return null;
+  if (!isAuthModalOpen) return null;
 
   return (
     // 1. Removed "no-scrollbar" to ensure viewports can render a scroll context if needed
@@ -25,7 +24,7 @@ const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
       <div className="relative my-auto w-full max-w-md max-h-[calc(100vh-3rem)] flex flex-col rounded-2xl bg-white shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-300">
         {/* Close Button - Placed inside a solid z-index stack above the scrolling panel */}
         <button
-          onClick={onClose}
+          onClick={closeAuthModal}
           className="absolute right-4 top-4 z-30 rounded-full p-2 bg-white/80 backdrop-blur-sm transition hover:bg-gray-100"
         >
           <X size={20} />
@@ -39,35 +38,36 @@ const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
           {/* Heading */}
           <div className="mb-5 text-center mt-2">
             <h2 className="text-3xl font-bold text-primary">
-              {view === "login" && "Welcome Back"}
-              {view === "register" && "Create Account"}
-              {view === "forgot-password" && "Reset Password"}
+              {currentView === "login" && "Welcome Back"}
+              {currentView === "register" && "Create Account"}
+              {currentView === "forgot-password" && "Reset Password"}
             </h2>
 
             <p className="mt-2 text-sm text-gray-500">
-              {view === "login" && "Login to continue shopping."}
-              {view === "register" && "Create your account to get started."}
-              {view === "forgot-password" &&
+              {currentView === "login" && "Login to continue shopping."}
+              {currentView === "register" &&
+                "Create your account to get started."}
+              {currentView === "forgot-password" &&
                 "Enter your email to receive a password recovery link."}
             </p>
           </div>
 
           {/* Forms Area - Wrapped with flex-1 to distribute height correctly */}
           <div className="flex-1">
-            {view === "login" && (
+            {currentView === "login" && (
               <LoginForm onForgotPassword={() => setView("forgot-password")} />
             )}
-            {view === "register" && <RegisterForm />}
+            {currentView === "register" && <RegisterForm />}
 
-            {view === "forgot-password" && (
+            {currentView === "forgot-password" && (
               <ForgotPasswordForm onBackToLogin={() => setView("login")} />
             )}
           </div>
 
           {/* Toggle Footnote Links (Hidden if on Forgot Password screen, as it handles its own navigation back) */}
-          {view !== "forgot-password" && (
+          {currentView !== "forgot-password" && (
             <div className="text-center text-sm mt-5 mb-1">
-              {view === "login" ? (
+              {currentView === "login" ? (
                 <>
                   Don't have an account?{" "}
                   <button

@@ -42,13 +42,6 @@ export const ResetPassword = ({ onBackToLogin }: ResetPasswordProps) => {
     e.preventDefault();
     setStatusMessage(null);
 
-    if (!token) {
-      setStatusMessage(
-        "Invalid or missing reset token. Please request a new link.",
-      );
-      return;
-    }
-
     // 3. Validate form data with Zod
     const result = resetPasswordSchema.safeParse(formData);
 
@@ -61,6 +54,13 @@ export const ResetPassword = ({ onBackToLogin }: ResetPasswordProps) => {
         }
       });
       setErrors(formattedErrors);
+      return;
+    }
+
+    if (!token) {
+      setStatusMessage(
+        "Invalid or missing reset token. Please request a new link.",
+      );
       return;
     }
 

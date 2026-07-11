@@ -6,6 +6,9 @@ import { assets } from "../assets/asset";
 import { useCartStore } from "../store/useCartStore.ts";
 import AuthModal from "./auth/AuthModal.tsx";
 import { useBodyScrollLock } from "../utils/useBodyScrollLock.ts";
+import { useAuthStore } from "../store/useAuthStore.ts";
+import { useAuthMutations } from "../hooks/useAuthMutations.ts";
+import toast from "react-hot-toast";
 
 const navLinks = [
   { name: "Home", href: "/" },
@@ -18,18 +21,34 @@ const navLinks = [
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [showMobileSearch, setShowMobileSearch] = useState<boolean>(false);
-  const [showUserMenu, setShowUserMenu] = useState(false);
-  const [isAuthOpen, setIsAuthOpen] = useState(false);
+
+  const openAuthModal = useAuthStore((state) => state.openAuthModal);
+  const isAuthModalOpen = useAuthStore((state) => state.isAuthModalOpen);
+  const user = useAuthStore((state) => state.user);
+  const { logoutMutation } = useAuthMutations();
+
   const navigate = useNavigate();
   const { cart } = useCartStore();
+  console.log({ user });
 
-  const user = {
-    name: "kalai",
-    role: "admin",
+  useBodyScrollLock(isAuthModalOpen);
+
+  const handleLogout = () => {
+    logoutMutation.mutate(
+      {},
+      {
+        onSuccess: () => {
+          toast.success("Logout Successfully");
+          navigate("/");
+        },
+        onError: (error) => {
+          console.log(error);
+          toast.error("Failed to log out. Please try again.");
+        },
+      },
+    );
   };
-
-  useBodyScrollLock(isAuthOpen);
-  console.log(showUserMenu);
+  // console.log(showUserMenu);
 
   return (
     <nav className="sticky top-0 z-50 bg-white shadow-sm border-b">
@@ -119,7 +138,10 @@ const Navbar = () => {
           <div className="relative hidden md:block">
             {!user ? (
               <button
-                onClick={() => setIsAuthOpen(true)}
+                onClick={() => {
+                  setIsOpen(false);
+                  openAuthModal("login"); // 👈 6. Mobile Login Trigger
+                }}
                 className="rounded-lg bg-primary px-4 py-2 text-white transition hover:opacity-90"
               >
                 Login
@@ -127,9 +149,11 @@ const Navbar = () => {
             ) : (
               <div className="relative group flex items-center gap-1 py-2 cursor-pointer">
                 {/* The Icon & Username - They automatically turn text-secondary on hover */}
-                <User2Icon className="text-primary w-6 h-6 group-hover:text-secondary transition-colors" />
-                <span className="font-medium text-gray-700 group-hover:text-secondary transition-colors">
-                  {user.name}
+                <User2Icon className="text-primary w-6 h-6 shrink-0 group-hover:text-secondary transition-colors" />
+
+                {/* Username with truncation for long strings */}
+                <span className="font-medium text-primary group-hover:text-secondary transition-colors max-w-[120px] lg:max-w-[180px] truncate block">
+                  {user.username}
                 </span>
 
                 {/* Dropdown Menu - Controlled completely via Tailwind group-hover */}
@@ -148,7 +172,7 @@ const Navbar = () => {
                     Orders
                   </NavLink>
 
-                  {user.role === "admin" && (
+                  {user?.role === "admin" && (
                     <NavLink
                       to="/admin"
                       className="block px-4 py-2 hover:bg-gray-100 text-red-600"
@@ -158,18 +182,16 @@ const Navbar = () => {
                   )}
 
                   <button
-                    onClick={() => {
-                      // logout logic later
-                    }}
+                    onClick={handleLogout}
                     className="w-full text-left px-4 py-2 hover:bg-gray-100 text-red-500"
                   >
-                    Logout
+                    {logoutMutation.isPending ? "Logging out..." : "Logout"}
                   </button>
                 </div>
               </div>
             )}
           </div>
-          <AuthModal isOpen={isAuthOpen} onClose={() => setIsAuthOpen(false)} />
+          <AuthModal />
           {/* Mobile Button */}
           <button
             className="md:hidden"
@@ -195,7 +217,7 @@ const Navbar = () => {
                 <a
                   href={link.href}
                   className="block border-b px-6 py-4 text-text hover:bg-gray-100"
-                  onClick={() => setIsOpen(false)}
+                  onClick={() => setIsOpen(!isOpen)}
                 >
                   {link.name}
                 </a>
@@ -204,7 +226,10 @@ const Navbar = () => {
 
             {!user ? (
               <button
-                onClick={() => setIsAuthOpen(true)}
+                onClick={() => {
+                  setIsOpen(false);
+                  openAuthModal("login");
+                }}
                 className="m-4 rounded-lg bg-primary py-3 text-white"
               >
                 Login
@@ -212,7 +237,9 @@ const Navbar = () => {
             ) : (
               <div className="flex flex-col">
                 <div className="px-6 py-3 font-semibold border-b">
-                  {user.name}
+                  <span className="font-medium text-primary group-hover:text-secondary transition-colors max-w-[120px] lg:max-w-[180px] truncate block">
+                    {user.username}
+                  </span>
                 </div>
 
                 <NavLink
@@ -242,13 +269,10 @@ const Navbar = () => {
                 )}
 
                 <button
-                  onClick={() => {
-                    // logout logic later
-                    setShowUserMenu(false);
-                  }}
+                  onClick={handleLogout}
                   className="m-4 rounded-lg bg-red-500 py-3 text-white"
                 >
-                  Logout
+                  {logoutMutation.isPending ? "Logging out..." : "Logout"}
                 </button>
               </div>
             )}

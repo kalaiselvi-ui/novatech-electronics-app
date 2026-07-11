@@ -1,60 +1,28 @@
 import { ArrowLeft } from "lucide-react";
+import { useState } from "react";
+import {
+  forgotPasswordSchema,
+  type ForgotPasswordFormData,
+} from "../../schemas/auth.schema.ts";
 
 interface ForgotPasswordFormProps {
   onBackToLogin: () => void;
 }
 
 const ForgotPasswordForm = ({ onBackToLogin }: ForgotPasswordFormProps) => {
+  const [errors, setErrors] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     console.log("Send password reset link API call");
-    // Your backend/Firebase auth logic goes here
+    const result = forgotPasswordSchema.safeParse({ email });
+    if (!result.success) {
+      setErrors(result.error.issues[0].message);
+      return;
+    }
+    setErrors("");
   };
-  // const [email, setEmail] = useState("");
-  // const [error, setError] = useState("");
-  // const [isSent, setIsSent] = useState(false);
-
-  // const handleSubmit = (e: React.FormEvent) => {
-  //   e.preventDefault();
-
-  //   // 1. Validate email with Zod
-  //   const result = forgotPasswordSchema.safeParse({ email });
-  //   if (!result.success) {
-  //     setError(result.error.issues[0].message);
-  //     return;
-  //   }
-
-  //   setError("");
-
-  //   // 2. Call backend API to send email
-  //   console.log("Send password reset link API call for:", email);
-
-  //   // 3. Switch view to success state
-  //   setIsSent(true);
-  // };
-
-  // SUCCESS STATE (After clicking Send Reset Link)
-  // if (isSent) {
-  //   return (
-  //     <div className="text-center space-y-4 py-2">
-  //       <h2 className="text-xl font-bold text-gray-900">Check Your Email ✉️</h2>
-  //       <p className="text-sm text-gray-600">
-  //         We sent a password recovery link to <strong className="text-gray-800">{email}</strong>.
-  //       </p>
-  //       <p className="text-xs text-gray-400">
-  //         Didn't receive the email? Check your spam folder or try again.
-  //       </p>
-  //       <button
-  //         type="button"
-  //         onClick={onBackToLogin}
-  //         className="w-full rounded-lg bg-primary py-2.5 font-semibold text-white transition hover:opacity-90"
-  //       >
-  //         Back to Login
-  //       </button>
-  //     </div>
-  //   );
-  // }
-
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <div>
@@ -67,10 +35,20 @@ const ForgotPasswordForm = ({ onBackToLogin }: ForgotPasswordFormProps) => {
         <input
           id="reset-email"
           type="email"
+          name="email"
+          value={email}
+          onChange={(e) => {
+            setEmail(e.target.value);
+          }}
           required
           placeholder="Enter your registered email"
           className="w-full rounded-lg border border-gray-300 px-4 py-2.5 outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20"
         />
+        {errors && (
+          <span className="mt-1 block text-xs font-medium text-red-500">
+            {errors}
+          </span>
+        )}
       </div>
 
       <button
