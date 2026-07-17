@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import CategoryCard from "../components/CategoryCard.tsx";
 import HeroSlider from "../components/HeroSlider.tsx";
 import ProductCard from "../components/ProductCard.tsx";
@@ -9,9 +9,17 @@ import { shuffleArray } from "../utils/shuffle.ts";
 import { usePagination } from "../hooks/usePagination.ts";
 import FeaturedProduct from "../components/FeaturedProduct.tsx";
 import SliderArrow from "../utils/SliderArrow.tsx";
+import { useProducts } from "../hooks/useProducts.ts";
+import { useCategories } from "../hooks/useCategories.ts";
 
 const Home = () => {
-  const [shuffledProducts] = useState(() => shuffleArray(productList));
+  const { data: products = [], isLoading } = useProducts();
+  const { data: categories = [] } = useCategories();
+  // const [shuffledProducts] = useState(() => shuffleArray(products));
+  const shuffledProducts = useMemo(() => {
+    return shuffleArray(products);
+  }, [products]);
+
   const featuredProducts = shuffledProducts
     .filter((product) => product.isFeatured)
     .slice(0, 8);
@@ -81,19 +89,25 @@ const Home = () => {
             >
               {featuredProducts.map((list) => (
                 <div
-                  key={list.id}
+                  key={list._id}
                   className="flex-shrink-0 snap-start w-[calc(85%-12px)] sm:w-[calc(45%-12px)] md:w-[calc(33.333%-12px)] lg:w-[calc(20%-12px)]"
                 >
-                  <ProductCard
-                    id={list.id}
-                    name={list.name}
-                    imageUrls={list.imageUrls}
-                    brand={list.brand}
-                    category={list.category}
-                    rating={list.rating}
-                    stock={list.stock}
-                    price={list.price}
-                  />
+                  {isLoading ? (
+                    <>Loading the Products....</>
+                  ) : (
+                    <ProductCard
+                      _id={list._id}
+                      id={list.id}
+                      name={list.name}
+                      images={list.images}
+                      brand={list.brand}
+                      category={list.category}
+                      description={list.description || ""}
+                      ratings={list.ratings}
+                      stock={list.stock}
+                      price={list.price}
+                    />
+                  )}
                 </div>
               ))}
             </div>
@@ -121,16 +135,18 @@ const Home = () => {
         </div>
         <div className="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-5 gap-4">
           {displayedProducts.map((list) => (
-            <div key={list.id}>
+            <div key={list._id}>
               <ProductCard
+                _id={list._id}
                 id={list.id}
                 name={list.name}
-                imageUrls={list.imageUrls}
+                images={list.images}
                 brand={list.brand}
                 category={list.category}
-                rating={list.rating}
+                ratings={list.ratings}
                 stock={list.stock}
                 price={list.price}
+                description={list.description || ""}
                 isFeatured={list.isFeatured}
               />
             </div>

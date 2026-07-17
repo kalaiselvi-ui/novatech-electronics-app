@@ -1,10 +1,14 @@
-import { Bell, Menu, Search } from "lucide-react";
+import { Bell, Menu } from "lucide-react";
+import SearchBar from "../SearchBar.tsx";
+import { useAdminSearchStore } from "../../store/useAdminSearchStore.ts";
 
 type AdminHeaderProps = {
   onMenuClick: () => void;
 };
 
 const AdminHeader = ({ onMenuClick }: AdminHeaderProps) => {
+  const setSearchQuery = useAdminSearchStore((state) => state.setSearchQuery);
+
   return (
     <header className="sticky top-0 z-30 flex h-20 items-center justify-between border-b bg-white px-6">
       {/* Left */}
@@ -23,19 +27,14 @@ const AdminHeader = ({ onMenuClick }: AdminHeaderProps) => {
 
       {/* Search */}
 
-      <div className="hidden lg:block relative w-80">
-        <Search
-          size={18}
-          className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
-        />
-
-        <input
-          type="text"
-          placeholder="Search..."
-          className="w-full rounded-lg border py-2 pl-10 pr-4 outline-none focus:border-primary"
+      <div className="lg:w-[500px] hidden md:flex">
+        <SearchBar
+          placeholder="Search products or orders..."
+          onSearch={(value) => {
+            setSearchQuery(value);
+          }}
         />
       </div>
-
       {/* Right */}
 
       <div className="flex items-center gap-5">

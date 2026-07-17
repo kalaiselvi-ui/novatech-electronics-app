@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuthStore } from "../../store/useAuthStore.ts";
 import toast from "react-hot-toast";
 
-const LoginForm = ({ onForgotPassword, onClose }: any) => {
+const LoginForm = ({ onForgotPassword }: any) => {
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState<LoginFormData>({
     email: "",
@@ -16,7 +16,6 @@ const LoginForm = ({ onForgotPassword, onClose }: any) => {
   const { closeAuthModal } = useAuthStore();
   const navigate = useNavigate();
   const { loginMutation } = useAuthMutations();
-  const user = useAuthStore((state) => state.user);
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -46,8 +45,16 @@ const LoginForm = ({ onForgotPassword, onClose }: any) => {
     }
     loginMutation.mutate(formData, {
       onSuccess: (data) => {
+        if (data?.token) {
+          localStorage.setItem("token", data.token); // Adjust 'data.token' if your backend names it 'data.accessToken'
+        }
+        // 2. Save user to Zustand store
+        if (data?.user) {
+          useAuthStore.getState().setUser(data.user);
+        }
         const username = data?.user?.username || "User";
         toast.success(`Welcome back, ${username}! 🎉`);
+        setFormData({ email: "", password: "" });
         closeAuthModal();
         navigate("/");
       },

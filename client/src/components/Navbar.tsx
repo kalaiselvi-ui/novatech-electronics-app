@@ -9,6 +9,7 @@ import { useBodyScrollLock } from "../utils/useBodyScrollLock.ts";
 import { useAuthStore } from "../store/useAuthStore.ts";
 import { useAuthMutations } from "../hooks/useAuthMutations.ts";
 import toast from "react-hot-toast";
+import { useFilterStore } from "../store/useFilterStore.ts";
 
 const navLinks = [
   { name: "Home", href: "/" },
@@ -29,26 +30,24 @@ const Navbar = () => {
 
   const navigate = useNavigate();
   const { cart } = useCartStore();
-  console.log({ user });
+  console.log(user?.role);
 
   useBodyScrollLock(isAuthModalOpen);
 
   const handleLogout = () => {
-    logoutMutation.mutate(
-      {},
-      {
-        onSuccess: () => {
-          toast.success("Logout Successfully");
-          navigate("/");
-        },
-        onError: (error) => {
-          console.log(error);
-          toast.error("Failed to log out. Please try again.");
-        },
+    logoutMutation.mutate(undefined, {
+      onSuccess: () => {
+        toast.success("User Logout Successfully");
+        navigate("/");
       },
-    );
+      onError: (error) => {
+        console.log(error);
+        toast.error("Failed to log out. Please try again.");
+      },
+    });
   };
-  // console.log(showUserMenu);
+
+  const setSearchQuery = useFilterStore((state) => state.setFilters);
 
   return (
     <nav className="sticky top-0 z-50 bg-white shadow-sm border-b">
@@ -82,9 +81,20 @@ const Navbar = () => {
         </ul>
 
         {/* Desktop Search Bar */}
-        <div className="hidden md:flex w-64 lg:w-96 xl:w-96 relative items-center">
-          <SearchBar />
-          <Search size={18} className="absolute left-3 text-textPrimary" />
+        <div className="hidden md:flex w-64 lg:w-52 xl:w-96 relative items-center">
+          <SearchBar
+            placeholder="Search products..."
+            onSearch={(value) => {
+              if (value) {
+                navigate("/products");
+              }
+
+              setSearchQuery({
+                searchQuery: value,
+              });
+            }}
+          />
+          <Search size={18} className="absolute right-3 text-textPrimary" />
           {/* <button className="absolute right-3 top-1/2 -translate-y-1/2">
             <X size={18} />
           </button> */}
@@ -110,7 +120,18 @@ const Navbar = () => {
                   : "max-w-0 w-0 opacity-0 scale-95"
               }`}
             >
-              <SearchBar />
+              <SearchBar
+                placeholder="Search products..."
+                onSearch={(value) => {
+                  if (value) {
+                    navigate("/products");
+                  }
+
+                  setSearchQuery({
+                    searchQuery: value,
+                  });
+                }}
+              />
             </div>
             {showMobileSearch && (
               <button
@@ -258,7 +279,7 @@ const Navbar = () => {
                   Orders
                 </NavLink>
 
-                {user.role === "admin" && (
+                {user?.role === "admin" && (
                   <NavLink
                     to="/admin"
                     className="px-6 py-3 border-b text-red-600"

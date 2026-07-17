@@ -3,6 +3,7 @@ import ProductGrid from "../components/ProductGrid.tsx";
 import FilterSidebar from "../components/FilterSidebar.tsx";
 import { productList } from "../data/product.ts";
 import { useFilterStore } from "../store/useFilterStore";
+import { useProducts } from "../hooks/useProducts.ts";
 
 const Products = () => {
   // 1. Grab all required state properties from your Zustand store
@@ -30,16 +31,19 @@ const Products = () => {
     setVisibleCount(12);
   }, [sortBy, selectedCategories, maxPrice, minRating, includeOutOfStock]);
 
+  const { data: products = [] } = useProducts();
+
   // 2. Filter and Sort the products completely based on store values
   const sortedProducts = useMemo(() => {
-    let result = [...productList];
+    let result = [...products];
+    console.log({ result });
 
     // Category Filter
     if (selectedCategories.length > 0) {
       result = result.filter(
         (product) => {
           // Convert "smart-watches" to "smart watches"
-          const productCat = product.category
+          const productCat = product.category?.name
             .toLowerCase()
             .replace(/-/g, " ")
             .trim(); // Convert the product category to "smart watches" as well
@@ -71,7 +75,10 @@ const Products = () => {
     result = result.filter((product) => product.price <= maxPrice);
 
     // Rating Filter
-    result = result.filter((product) => product.rating >= minRating);
+    result = result.filter(
+      (product) =>
+        product?.ratings !== undefined && product.ratings >= minRating,
+    );
 
     // Out of Stock Filter
     if (!includeOutOfStock) {
@@ -81,8 +88,9 @@ const Products = () => {
     // Sorting Logic
     if (sortBy === "price-low") result.sort((a, b) => a.price - b.price);
     if (sortBy === "price-high") result.sort((a, b) => b.price - a.price);
-    if (sortBy === "rating") result.sort((a, b) => b.rating - a.rating);
-
+    if (sortBy === "ratings") {
+      result.sort((a, b) => (b.ratings ?? 0) - (a.ratings ?? 0));
+    }
     return result;
   }, [
     sortBy,
@@ -91,6 +99,7 @@ const Products = () => {
     maxPrice,
     minRating,
     includeOutOfStock,
+    products,
   ]);
 
   const productsToDisplay = useMemo(() => {

@@ -7,8 +7,10 @@ import {
   X,
   MoveLeft,
 } from "lucide-react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { useBodyScrollLock } from "../../utils/useBodyScrollLock.ts";
+import { useAuthMutations } from "../../hooks/useAuthMutations.ts";
+import toast from "react-hot-toast";
 
 type AdminSidebarProps = {
   isOpen: boolean;
@@ -45,6 +47,21 @@ const links = [
 
 const AdminSidebar = ({ isOpen, onClose }: AdminSidebarProps) => {
   useBodyScrollLock(isOpen);
+  const { logoutMutation } = useAuthMutations();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logoutMutation.mutate(undefined, {
+      onSuccess: () => {
+        toast.success("Admin Logout successfully");
+        navigate("/");
+      },
+      onError: (error) => {
+        console.log(error);
+        toast.error("Failed to log out. Please try again.");
+      },
+    });
+  };
 
   return (
     <>
@@ -119,9 +136,12 @@ const AdminSidebar = ({ isOpen, onClose }: AdminSidebarProps) => {
         {/* Footer */}
 
         <div className="absolute bottom-0 w-full border-t p-4">
-          <button className="flex w-full items-center gap-3 rounded-lg px-4 py-3 text-red-500 hover:bg-red-50">
+          <button
+            onClick={handleLogout}
+            className="flex w-full items-center gap-3 rounded-lg px-4 py-3 text-red-500 hover:bg-red-50"
+          >
             <LogOut size={18} />
-            Logout
+            {logoutMutation.isPending ? "Logging out..." : "Logout"}
           </button>
         </div>
       </aside>

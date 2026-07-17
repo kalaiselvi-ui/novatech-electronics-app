@@ -4,16 +4,16 @@ import {
   resetPasswordSchema,
   type ResetPasswordFormData,
 } from "../../schemas/auth.schema.ts";
+import { useAuthMutations } from "../../hooks/useAuthMutations.ts";
+import toast from "react-hot-toast";
+import { useAuthStore } from "../../store/useAuthStore.ts";
+import { useSearchParams } from "react-router-dom";
 
 interface ResetPasswordProps {
   onBackToLogin?: () => void;
 }
 
 export const ResetPassword = ({ onBackToLogin }: ResetPasswordProps) => {
-  // 1. Extract the token from the URL
-  const queryParams = new URLSearchParams(window.location.search);
-  const token = queryParams.get("token");
-
   // 2. State management
   const [formData, setFormData] = useState<ResetPasswordFormData>({
     password: "",
@@ -24,9 +24,11 @@ export const ResetPassword = ({ onBackToLogin }: ResetPasswordProps) => {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [statusMessage, setStatusMessage] = useState<string | null>(null);
-  const [isSuccess, setIsSuccess] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
+  const [isSuccess] = useState(false);
+  const { closeAuthModal } = useAuthStore();
+  const { resetPasswordMutation } = useAuthMutations();
+  const [searchParams] = useSearchParams();
+  const token = searchParams.get("token");
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
       ...formData,
@@ -37,6 +39,7 @@ export const ResetPassword = ({ onBackToLogin }: ResetPasswordProps) => {
       setErrors((prev) => ({ ...prev, [e.target.name]: "" }));
     }
   };
+  console.log({ token });
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -65,27 +68,21 @@ export const ResetPassword = ({ onBackToLogin }: ResetPasswordProps) => {
     }
 
     setErrors({});
-    setIsSubmitting(true);
 
-    try {
-      // 4. API Call placeholder
-      /*
-      await fetch('/api/auth/reset-password', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          token: token,
-          newPassword: result.data.password,
-        }),
-      });
-      */
-
-      setIsSuccess(true);
-    } catch (error) {
-      setStatusMessage("Failed to reset password. Please try again.");
-    } finally {
-      setIsSubmitting(false);
-    }
+    resetPasswordMutation.mutate(
+      { token, ...formData },
+      {
+        onSuccess: () => {
+          toast.success("Reset Password Successfully");
+          setFormData({ password: "", confirmPassword: "" });
+          closeAuthModal();
+        },
+        onError: (err: any) => {
+          toast.error(err.response?.data?.message || "Invalid credentials!");
+          closeAuthModal();
+        },
+      },
+    );
   };
 
   return (
@@ -187,10 +184,20 @@ export const ResetPassword = ({ onBackToLogin }: ResetPasswordProps) => {
               {/* Submit Button */}
               <button
                 type="submit"
-                disabled={isSubmitting}
+                disabled={resetPasswordMutation.isPending}
                 className="w-full rounded-lg bg-primary py-3 font-semibold text-white transition hover:opacity-90 disabled:opacity-50 mt-2"
               >
-                {isSubmitting ? "Updating..." : "Reset Password"}
+                {/* {resetPasswordMutation.isPending ? (
+                  <>
+                    <span className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
+                    Updating...
+                  </>
+                ) : (
+                  "Reset Password"
+                )} */}
+                {resetPasswordMutation.isPending
+                  ? "Updating..."
+                  : "Reset Password"}
               </button>
             </form>
           </>

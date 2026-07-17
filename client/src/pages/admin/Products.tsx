@@ -1,24 +1,44 @@
-// pages/AdminProductsPage.tsx
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Edit2, Trash2, Plus, Package, Image as ImageIcon } from "lucide-react";
-import ProductForm, {
-  type ProductType,
-} from "../../components/ProductForm.tsx";
-import { productList } from "../../data/product.ts";
+import ProductForm from "../../components/ProductForm.tsx";
 import { usePagination } from "../../hooks/usePagination.ts";
 import Pagination from "../../components/Pagination.tsx";
 import { shuffleArray } from "../../utils/shuffle.ts";
-import { categories } from "../../data/category.ts";
-
-// 1. Extend or define our inventory items type
-interface ProductItem extends Omit<ProductType, "image"> {
-  id: string;
-  brand: string;
-  image: string | null; // Production URL or preview local string
-}
+import { useProducts } from "../../hooks/useProducts.ts";
+import type { ProductFormData, ProductProps } from "../../types/type.ts";
+import { useProductMutation } from "../../hooks/useProductMutation.ts";
+import toast from "react-hot-toast";
+import { useCategories } from "../../hooks/useCategories.ts";
+import { useAdminSearchStore } from "../../store/useAdminSearchStore.ts";
 
 const Products = () => {
-  const [shuffledProducts] = useState(() => shuffleArray(productList));
+  const { data: products = [], isLoading } = useProducts();
+  const { data: categories = [] } = useCategories();
+  const {
+    deleteProductMutation,
+    createProductMutation,
+    updateProductMutation,
+  } = useProductMutation();
+
+  const searchQuery = useAdminSearchStore((state) => state.searchQuery);
+
+  const filteredProducts = products.filter((product) => {
+    if (!searchQuery) return true;
+
+    const search = searchQuery.toLowerCase();
+
+    return (
+      product.name.toLowerCase().includes(search) ||
+      product.brand.toLowerCase().includes(search) ||
+      product.category?.name.toLowerCase().includes(search)
+    );
+  });
+
+  // const shuffledProducts = shuffleArray(products);
+  const shuffledProducts = useMemo(
+    () => shuffleArray(filteredProducts),
+    [filteredProducts],
+  );
 
   // 1. Initialize pagination hook (passing your state products array)
   const {
@@ -26,107 +46,77 @@ const Products = () => {
     currentPage,
     totalPages,
     goToPage,
-  } = usePagination({ data: shuffledProducts, itemsPerPage: 15 }); // Set to 10 or 15 rows per page
-
-  // 2. Initialize product inventory list state with mock records
-  const [products, setProducts] = useState<ProductItem[]>([
-    {
-      id: "PROD-001",
-      name: "Nova Buds Pro",
-      brand: "NovaTech",
-      description: "Premium spatial acoustic filters with ANC.",
-      category: "Audio Devices",
-      price: 149.99,
-      stock: 45,
-      image: null,
-    },
-    {
-      id: "PROD-002",
-      name: "AlphaBook 14",
-      brand: "NovaTech",
-      description: "M3 optimized lightweight developer workhorse.",
-      category: "Laptops",
-      price: 1299.0,
-      stock: 12,
-      image: null,
-    },
-  ]);
+  } = usePagination<ProductProps>({ data: shuffledProducts, itemsPerPage: 15 }); // Set to 10 or 15 rows per page
 
   // View state controllers
   const [isFormOpen, setIsFormOpen] = useState(false);
-  const [editingProduct, setEditingProduct] = useState<ProductType | undefined>(
-    undefined,
+  const [editingProduct, setEditingProduct] = useState<ProductProps | null>(
+    null,
   );
 
   const handleOpenAddForm = () => {
-    setEditingProduct(undefined);
+    setEditingProduct(null);
     setIsFormOpen(true);
   };
 
-  // const handleOpenEditForm = (product: ProductItem) => {
-  //   setEditingProduct({
-  //     id: product.id,
-  //     name: product.name,
-  //     description: product.description,
-  //     category: product.category,
-  //     price: product.price,
-  //     stock: product.stock,
-  //     image: product.image,
-  //   });
-  //   setIsFormOpen(true);
-  // };
+  const handleSaveProduct = (data: ProductFormData) => {
+    const formData = new FormData();
 
-  const handleDeleteProduct = (id: string) => {
-    if (window.confirm("Are you sure you want to delete this product?")) {
-      setProducts(products.filter((p) => p.id !== id));
+    const specs = Object.fromEntries(
+      data.specs.split("\n").map((item) => {
+        const [key, value] = item.split(":");
+        return [key.trim(), value?.trim()];
+      }),
+    );
+
+    formData.append("name", data.name);
+    formData.append("price", data.price.toString());
+    formData.append("description", data.description);
+    formData.append("brand", data.brand);
+    formData.append("stock", data.stock.toString());
+    formData.append("specs", JSON.stringify(specs));
+    formData.append("category", data.category);
+    data.images.forEach((image) => {
+      formData.append("images", image);
+    });
+
+    if (editingProduct) {
+      updateProductMutation.mutate(
+        { id: editingProduct._id, formData },
+        {
+          onSuccess: () => {
+            toast.success("Product Updated Successfully");
+            setIsFormOpen(false);
+          },
+          onError: (err: any) => {
+            toast.error(err.response?.data?.message || "Failed to update");
+          },
+        },
+      );
+    } else {
+      createProductMutation.mutate(formData, {
+        onSuccess: () => {
+          toast.success("Product Created Successfully");
+          setIsFormOpen(false);
+        },
+        onError: (err: any) => {
+          toast.error(err.response?.data?.message || "Failed to create");
+        },
+      });
     }
   };
 
-  const handleSaveProduct = (formData: FormData) => {
-    const id = formData.get("id") as string;
-    const name = formData.get("name") as string;
-    const description = formData.get("description") as string;
-    const category = formData.get("category") as string;
-    const price = Number(formData.get("price"));
-    const stock = Number(formData.get("stock"));
-    const fileImage = formData.get("image") as File | null;
-
-    let localImageString: string | null = null;
-    if (fileImage) {
-      localImageString = URL.createObjectURL(fileImage);
+  const handleDeleteProduct = (id: string) => {
+    if (window.confirm("Are you sure you want to delete this product?")) {
+      deleteProductMutation.mutate(id, {
+        onSuccess: () => {
+          toast.success("Product Deleted Successfully");
+        },
+        onError: (err: any) => {
+          toast.error(err.response?.data?.message || "Failed to delete");
+        },
+      });
     }
-
-    if (id) {
-      setProducts(
-        products.map((p) =>
-          p.id === id
-            ? {
-                ...p,
-                name,
-                description,
-                category,
-                price,
-                stock,
-                image: localImageString || p.image,
-              }
-            : p,
-        ),
-      );
-    } else {
-      const newProduct: ProductItem = {
-        id: `PROD-${Math.floor(100 + Math.random() * 900)}`,
-        name,
-        brand: "NovaTech",
-        description,
-        category,
-        price,
-        stock,
-        image: localImageString,
-      };
-      setProducts([...products, newProduct]);
-    }
-
-    setIsFormOpen(false);
   };
 
   return (
@@ -140,6 +130,9 @@ const Products = () => {
           <p className="text-xs md:text-sm text-gray-500">
             Track, update, or remove active inventory items.
           </p>
+          <span className="text-textSecondary text-xs">
+            Total: {products.length} Products
+          </span>
         </div>
         {!isFormOpen && (
           <button
@@ -156,7 +149,7 @@ const Products = () => {
         <div className="animate-in fade-in-50 duration-200">
           <ProductForm
             initialData={editingProduct}
-            categories={categories.map((c) => c.name)}
+            categories={categories}
             onSave={handleSaveProduct}
             onCancel={() => setIsFormOpen(false)}
           />
@@ -199,15 +192,15 @@ const Products = () => {
                 ) : (
                   paginatedProducts.map((product) => (
                     <tr
-                      key={product.id}
+                      key={product._id}
                       className="hover:bg-gray-50/70 transition-colors"
                     >
                       {/* Thumbnail */}
                       <td className="px-1 py-3 md:px-6 md:py-4 whitespace-nowrap">
                         <div className="h-11 w-11 rounded-lg bg-gray-50 border border-gray-200 overflow-hidden flex items-center justify-center shrink-0">
-                          {product.imageUrls ? (
+                          {product.images ? (
                             <img
-                              src={product.imageUrls[0]}
+                              src={product.images[0]}
                               alt={product.name}
                               className="h-full w-full object-cover"
                             />
@@ -221,9 +214,6 @@ const Products = () => {
                       <td className="px-1 py-3 md:px-6 md:py-4 font-medium text-gray-900 whitespace-nowrap max-w-4">
                         <div className="flex flex-col">
                           <span className="truncate ">{product.name}</span>
-                          <span className="text-xs text-gray-400 font-normal">
-                            {product.id}
-                          </span>
                         </div>
                       </td>
 
@@ -235,7 +225,7 @@ const Products = () => {
                       {/* Category (Visible md and up) */}
                       <td className="px-1 py-3 md:px-6 md:py-4 whitespace-nowrap">
                         <span className="inline-block px-2.5 py-1 text-xs text-white font-medium rounded-full bg-primary">
-                          {product.category}
+                          {product.category?.name}
                         </span>
                       </td>
 
@@ -258,12 +248,16 @@ const Products = () => {
                         <div className="flex justify-end gap-1.5">
                           <button
                             title="Edit Item Details"
+                            onClick={() => {
+                              (setEditingProduct(product), setIsFormOpen(true));
+                            }}
+                            aria-label="edit-icon"
                             className="p-1.5 text-gray-500 hover:text-primary rounded-lg hover:bg-blue-50 transition"
                           >
                             <Edit2 size={15} className="text-primary" />
                           </button>
                           <button
-                            onClick={() => handleDeleteProduct(product.id)}
+                            onClick={() => handleDeleteProduct(product._id)}
                             title="Delete Item Record"
                             className="p-1.5 text-red-600 rounded-lg hover:bg-red-50 transition"
                           >

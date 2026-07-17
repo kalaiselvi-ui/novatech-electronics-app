@@ -16,9 +16,9 @@ const ProductCard = ({
   id,
   name,
   brand,
-  imageUrls,
+  images,
   price,
-  rating,
+  ratings,
   stock,
   category,
   isFeatured,
@@ -36,18 +36,19 @@ const ProductCard = ({
 
   // Image slider active index state
   const [currentImgIndex, setCurrentImgIndex] = useState(0);
-  const images = Array.isArray(imageUrls) ? imageUrls : [imageUrls];
-
+  const imageArray = Array.isArray(images) ? images : [images];
   const handleNextImage = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    setCurrentImgIndex((prev) => (prev + 1) % images.length);
+    setCurrentImgIndex((prev) => (prev + 1) % imageArray.length);
   };
 
   const handlePrevImage = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    setCurrentImgIndex((prev) => (prev - 1 + images.length) % images.length);
+    setCurrentImgIndex(
+      (prev) => (prev - 1 + images.length) % imageArray.length,
+    );
   };
 
   return (
@@ -66,7 +67,7 @@ const ProductCard = ({
         {/* Dynamic Badges Overlay */}
         <div className="absolute top-3 left-3 flex flex-col gap-1.5 z-10">
           <span className="px-2.5 py-0.5 text-[9px] font-bold uppercase tracking-wider text-blue-600 bg-blue-50/90 backdrop-blur-xs rounded-md border border-blue-100/50">
-            {category}
+            {category.name}
           </span>
           {isFeatured && (
             <span className="px-2.5 py-0.5 flex items-center gap-1 text-[9px] font-bold uppercase tracking-wider text-white bg-gradient-to-r from-amber-500 to-orange-500 rounded-md shadow-xs">
@@ -148,10 +149,10 @@ const ProductCard = ({
                 {price}
               </p>
             </div>
-            {rating && (
+            {ratings && (
               <div className="flex items-center gap-0.5 text-xs font-bold text-gray-800 bg-amber-400/10 border border-amber-400/20 px-2 py-0.5 rounded-md">
                 <span className="text-amber-500 text-[11px]">★</span>
-                <span>{rating}</span>
+                <span>{ratings}</span>
               </div>
             )}
           </div>

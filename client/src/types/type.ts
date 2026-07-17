@@ -1,4 +1,5 @@
 import type { RefObject } from "react";
+import type { Category } from "./category.ts";
 
 export type SlideData = {
   id: number;
@@ -12,22 +13,27 @@ export type SlideData = {
 };
 
 export interface CategoryProps {
+  _id: string;
   name: string;
-  slug: string;
   image: string;
+  slug?: string;
 }
 
 export interface ProductProps {
+  _id: string;
   id: string;
   slug?: string;
   name: string;
   brand: string;
-  category: string;
+  category: {
+    _id: string;
+    name: string;
+  };
   price: number;
-  imageUrls: string[];
-  rating?: number;
+  images: string[];
+  ratings?: number;
   stock: number;
-  description?: string;
+  description: string;
   specs?: Record<string, any>;
   isFeatured?: boolean;
 }
@@ -58,3 +64,19 @@ export interface FilterState {
   setFilters: (partial: Partial<FilterState>) => void;
   resetFilters: () => void;
 }
+
+export type ProductFormData = {
+  name: string;
+  brand: string;
+  category: string;
+  price: number;
+  stock: number;
+  description: string;
+  specs: string;
+  images: File[]; // before upload
+};
+
+// Reuse ProductFormData and add the _id property for editing
+export type EditProductFormData = ProductFormData & {
+  _id: string;
+};

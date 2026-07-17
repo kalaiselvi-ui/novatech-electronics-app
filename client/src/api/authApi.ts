@@ -22,7 +22,7 @@ export const resetPasswordApi = async (formData: Record<string, any>) => {
   const { data } = await API.post("/user/reset-password", formData);
   return data;
 };
-export const logoutApi = async (formData: Record<string, any>) => {
+export const logoutApi = async () => {
   const { data } = await API.post("/user/logout");
   return data;
 };

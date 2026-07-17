@@ -1,9 +1,9 @@
 import { ArrowLeft } from "lucide-react";
 import { useState } from "react";
-import {
-  forgotPasswordSchema,
-  type ForgotPasswordFormData,
-} from "../../schemas/auth.schema.ts";
+import { forgotPasswordSchema } from "../../schemas/auth.schema.ts";
+import { useAuthMutations } from "../../hooks/useAuthMutations.ts";
+import toast from "react-hot-toast";
+import { useAuthStore } from "../../store/useAuthStore.ts";
 
 interface ForgotPasswordFormProps {
   onBackToLogin: () => void;
@@ -12,6 +12,8 @@ interface ForgotPasswordFormProps {
 const ForgotPasswordForm = ({ onBackToLogin }: ForgotPasswordFormProps) => {
   const [errors, setErrors] = useState<string>("");
   const [email, setEmail] = useState<string>("");
+  const { forgotPasswordMutation } = useAuthMutations();
+  const { closeAuthModal } = useAuthStore();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -22,6 +24,21 @@ const ForgotPasswordForm = ({ onBackToLogin }: ForgotPasswordFormProps) => {
       return;
     }
     setErrors("");
+    forgotPasswordMutation.mutate(
+      { email },
+      {
+        onSuccess: () => {
+          toast.success("Password reset link sent to your email!");
+          setEmail("");
+          closeAuthModal();
+        },
+        onError: (err: any) => {
+          toast.error(
+            err.response?.data?.message || "Failed to send reset link.",
+          );
+        },
+      },
+    );
   };
   return (
     <form onSubmit={handleSubmit} className="space-y-4">

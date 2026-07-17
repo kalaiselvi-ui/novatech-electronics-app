@@ -1,15 +1,20 @@
 import React, { useState, useRef } from "react";
 import { Upload, X, Folder } from "lucide-react";
 import InputField from "../../components/InputField.tsx";
-import { categories } from "../../data/category.ts";
+// import { categories } from "../../data/category.ts";
+import { useCategoryMutations } from "../../hooks/useCategoryMutations.ts";
+import toast from "react-hot-toast";
+import { useCategories } from "../../hooks/useCategories.ts";
 
 export default function CategoriesPage() {
   // Existing Form State
   const [categoryName, setCategoryName] = useState("");
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const { createCategoryMutation, deleteCategoryMutation } =
+    useCategoryMutations();
   const fileInputRef = useRef<HTMLInputElement>(null);
-
+  const { data: categories = [], isLoading } = useCategories();
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
@@ -23,25 +28,39 @@ export default function CategoriesPage() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!categoryName.trim()) return;
-
-    // const newCategory: CategoryItem = {
-    //   id: Date.now().toString(),
-    //   name: categoryName,
-    //   image: imagePreview, // Save the image preview URL locally for now
-    // };
-
-    // setCategories([...categories, newCategory]);
-
-    // Reset Form Fields
-    setCategoryName("");
-    setImageFile(null);
-    setImagePreview(null);
-    if (fileInputRef.current) fileInputRef.current.value = "";
+    let formData = new FormData();
+    formData.append("name", categoryName);
+    if (imageFile) {
+      formData.append("image", imageFile);
+    }
+    createCategoryMutation.mutate(formData, {
+      onSuccess: () => {
+        toast.success("New Category Created Successfully");
+        // Reset Form Fields
+        setCategoryName("");
+        setImageFile(null);
+        setImagePreview(null);
+        if (fileInputRef.current) {
+          fileInputRef.current.value = "";
+        }
+      },
+      onError: (err: any) => {
+        toast.error(err.response?.data?.message || "Failed to Create");
+      },
+    });
   };
 
-  const handleRemoveCategory = (slug: string) => {
-    // setCategories(categories.filter((cat) => cat.id !== id));
-    console.log(slug);
+  const handleRemoveCategory = (id: string) => {
+    if (window.confirm("Are you sure you want to delete this category?")) {
+      deleteCategoryMutation.mutate(id, {
+        onSuccess: () => {
+          toast.success("Category Deleted Successfully");
+        },
+        onError: (err: any) => {
+          toast.error(err.response?.data?.message || "Failed to delete");
+        },
+      });
+    }
   };
   return (
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
@@ -59,6 +78,7 @@ export default function CategoriesPage() {
           label="Category Name"
           id="categoryName"
           placeholder="e.g., Audio Devices"
+          name="name"
           value={categoryName}
           onChange={(e) => setCategoryName(e.target.value)}
           required
@@ -70,6 +90,7 @@ export default function CategoriesPage() {
           </label>
           <input
             type="file"
+            name="image"
             ref={fileInputRef}
             accept="image/*"
             onChange={handleFileChange}
@@ -110,7 +131,7 @@ export default function CategoriesPage() {
           type="submit"
           className="w-full rounded-lg bg-primary py-2.5 font-medium text-white transition hover:bg-primary/85 text-sm"
         >
-          + Add Category
+          {isLoading ? "Loading..." : "+ Add Category"}
         </button>
       </form>
 
@@ -126,9 +147,9 @@ export default function CategoriesPage() {
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {categories.map((category) => (
+            {categories?.map((category) => (
               <div
-                key={category.slug}
+                key={category._id}
                 className="flex items-center justify-between p-4 bg-white border rounded-xl shadow-sm group hover:border-primary transition-colors"
               >
                 <div className="flex items-center gap-4">
@@ -155,7 +176,7 @@ export default function CategoriesPage() {
                 {/* Delete category item button */}
                 <button
                   type="button"
-                  onClick={() => handleRemoveCategory(category.slug)}
+                  onClick={() => handleRemoveCategory(category._id)}
                   className="text-gray-400 hover:text-red-500 p-1.5 rounded-lg hover:bg-red-50 transition"
                 >
                   <X size={18} />

@@ -3,9 +3,7 @@ import axios from "axios";
 // 1. Create instance with default base URL and headers
 export const API = axios.create({
   baseURL: "http://localhost:4000/api", // Adjust port/path if needed
-  headers: {
-    "Content-Type": "application/json",
-  },
+  withCredentials: true, // 👈 Required if your backend uses HTTP-Only Cookies
 });
 
 // 2. Add Request Interceptor to automatically attach JWT token

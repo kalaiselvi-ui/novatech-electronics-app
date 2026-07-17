@@ -50,6 +50,13 @@ const RegisterForm = () => {
       onSuccess: () => {
         setView("login");
         toast.success("Registration successful! Please log in.");
+        setFormData({
+          email: "",
+          password: "",
+          username: "",
+          confirmPassword: "",
+        });
+
         closeAuthModal();
       },
       onError: (err: any) => {

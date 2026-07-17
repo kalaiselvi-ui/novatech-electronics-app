@@ -56,7 +56,7 @@ const ProductGrid = ({ products }: ProductGridProps) => {
             <ProductCard
               key={product.id}
               {...product}
-              imageUrls={product.imageUrls}
+              images={product.images}
             />
           ))}
         </div>

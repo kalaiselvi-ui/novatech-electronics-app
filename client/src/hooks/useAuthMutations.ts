@@ -17,6 +17,7 @@ export const useAuthMutations = () => {
   const loginMutation = useMutation({
     mutationFn: loginApi,
     onSuccess: (data) => {
+      console.log("Login API Response:", data); // 👈 Inspect this output in DevTools!
       setUser(data.user);
     },
   });
@@ -24,7 +25,7 @@ export const useAuthMutations = () => {
   const registerMutation = useMutation({
     mutationFn: registerApi,
     onSuccess: (data) => {
-      setUser(data);
+      setUser(data.user);
     },
   });
 
@@ -52,7 +53,7 @@ export const useAuthMutations = () => {
   const resetPasswordMutation = useMutation({
     mutationFn: resetPasswordApi,
     onSuccess: (data) => {
-      setUser(data);
+      setUser(data.user);
     },
   });
 
