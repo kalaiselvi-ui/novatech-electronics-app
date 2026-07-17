@@ -125,7 +125,7 @@ const forgotPassword = async (req, res) => {
 const resetPassword = async (req, res) => {
   try {
     const { password, confirmPassword } = req.body;
-    const token = req.query.token || req.params.token;
+    const token = req.query.token || req.params.token || req.body.token;
     if (!password || !confirmPassword) {
       return res
         .status(400)

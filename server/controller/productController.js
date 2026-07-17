@@ -4,7 +4,8 @@ import { uploadToCloudinary } from "../utils/upload.js";
 
 const createProduct = async (req, res) => {
   try {
-    const { name, brand, category, price, stock } = req.body;
+    const { name, brand, category, price, stock, specs, description } =
+      req.body;
 
     if (!req.files || req.files.length === 0) {
       return res.status(400).json({ message: "Image required" });
@@ -26,6 +27,8 @@ const createProduct = async (req, res) => {
       stock,
       brand,
       price,
+      description,
+      specs: JSON.parse(specs),
       images: imageUrls,
     });
 
@@ -44,7 +47,8 @@ const createProduct = async (req, res) => {
 
 const updateProduct = async (req, res) => {
   try {
-    const { name, brand, category, price, stock } = req.body;
+    const { name, brand, category, price, stock, specs, description } =
+      req.body;
     const { id } = req.params;
     const product = await Products.findById(id);
     if (!product) return res.status(404).json({ message: "Product not found" });
@@ -79,6 +83,11 @@ const updateProduct = async (req, res) => {
     product.category = category ?? product.category;
     product.price = price ?? product.price;
     product.stock = stock ?? product.stock;
+    if (specs) {
+      product.specs = JSON.parse(specs);
+    }
+    product.description = description ?? product.description;
+
     product.images = newImages;
     await product.save();
     return res.status(200).json({
@@ -106,7 +115,7 @@ const getAllProducts = async (req, res) => {
 const deleteProduct = async (req, res) => {
   try {
     const { id } = req.params;
-    const product = await Products.findOneAndDelete(id);
+    const product = await Products.findByIdAndDelete(id);
     if (!product) return res.status(404).json({ message: "No Product Found" });
     return res.status(200).json({ message: "Product Deleted Successfully" });
   } catch (err) {

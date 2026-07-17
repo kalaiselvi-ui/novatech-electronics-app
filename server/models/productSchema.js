@@ -15,6 +15,9 @@ const productSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    description: {
+      type: String,
+    },
     // This connects each product to a specific Category document
     category: {
       type: mongoose.Schema.Types.ObjectId,
@@ -39,14 +42,19 @@ const productSchema = new mongoose.Schema(
       // Automatically rounds ratings to 1 decimal place (e.g., 4.3456 -> 4.3)
       set: (val) => Math.round(val * 10) / 10,
     },
+    // 💻 DYNAMIC MAP FIELD
+    specs: {
+      type: Map,
+      of: String, // Forces every value to be a string
+      default: {},
+    },
     numOfReviews: {
       type: Number,
       default: 0, // Starts with 0 reviews
     },
     images: [
       {
-        url: { type: String, required: true },
-        public_id: { type: String, required: true }, // Array of Cloudinary URL strings
+        type: String,
       },
     ],
   },
