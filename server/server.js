@@ -12,19 +12,19 @@ import orderRouter from "./router/orderRoute.js";
 const app = express();
 
 const PORT = process.env.PORT || 5000;
-app.use(express.json()); // To parse JSON bodies sent by the frontend
-app.use(express.urlencoded({ extended: true, limit: "10mb" }));
 
 app.use(
   cors({
     origin: [
       "http://localhost:5173",
       "http://localhost:3000",
-      "https://novatech-pied.vercel.app/",
+      "https://novatech-pied.vercel.app",
     ],
     credentials: true,
   }),
 );
+app.use(express.json()); // To parse JSON bodies sent by the frontend
+app.use(express.urlencoded({ extended: true, limit: "10mb" }));
 connectDB();
 
 app.use("/api/user", userRouter);
