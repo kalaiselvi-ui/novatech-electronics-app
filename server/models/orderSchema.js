@@ -1,4 +1,5 @@
-// Example structural draft for your future order schema
+import mongoose from "mongoose";
+
 const orderSchema = new mongoose.Schema(
   {
     user: {
@@ -6,6 +7,7 @@ const orderSchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
+
     items: [
       {
         product: {
@@ -13,14 +15,88 @@ const orderSchema = new mongoose.Schema(
           ref: "Product",
           required: true,
         },
-        quantity: { type: Number, required: true },
-        price: { type: Number, required: true },
+
+        quantity: {
+          type: Number,
+          required: true,
+          min: 1,
+        },
+
+        price: {
+          type: Number,
+          required: true,
+        },
       },
     ],
-    shippingAddress: { type: Object, required: true },
-    paymentStatus: { type: String, default: "Pending" }, // 'Paid', 'Failed'
-    paymentIntentId: { type: String }, // To track gateway transactions
-    totalAmount: { type: Number, required: true },
+
+    shippingAddress: {
+      fullName: {
+        type: String,
+        required: true,
+      },
+      email: {
+        type: String,
+        required: true,
+      },
+
+      phone: {
+        type: String,
+        required: true,
+      },
+
+      address: {
+        type: String,
+        required: true,
+      },
+
+      city: {
+        type: String,
+        required: true,
+      },
+      state: {
+        type: String,
+        required: true,
+      },
+      country: {
+        type: String,
+        required: true,
+      },
+
+      postalCode: {
+        type: String,
+      },
+    },
+
+    paymentMethod: {
+      type: String,
+      enum: ["COD", "CARD"],
+      required: true,
+    },
+
+    paymentStatus: {
+      type: String,
+      enum: ["Pending", "Paid", "Failed"],
+      default: "Pending",
+    },
+
+    paymentIntentId: {
+      type: String,
+    },
+
+    totalAmount: {
+      type: Number,
+      required: true,
+    },
+
+    orderStatus: {
+      type: String,
+      enum: ["Processing", "Shipped", "Delivered", "Cancelled"],
+      default: "Processing",
+    },
   },
-  { timestamps: true },
+  {
+    timestamps: true,
+  },
 );
+
+export default mongoose.model("Order", orderSchema);
