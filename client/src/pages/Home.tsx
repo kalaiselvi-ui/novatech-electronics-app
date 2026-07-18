@@ -1,9 +1,8 @@
-import { useMemo, useRef, useState } from "react";
+import { useMemo, useRef } from "react";
 import CategoryCard from "../components/CategoryCard.tsx";
 import HeroSlider from "../components/HeroSlider.tsx";
 import ProductCard from "../components/ProductCard.tsx";
-import { categories, heroSlides } from "../data/category.ts";
-import { productList } from "../data/product.ts";
+import { heroSlides } from "../data/category.ts";
 import Pagination from "../components/Pagination.tsx";
 import { shuffleArray } from "../utils/shuffle.ts";
 import { usePagination } from "../hooks/usePagination.ts";
@@ -98,6 +97,7 @@ const Home = () => {
                     <ProductCard
                       _id={list._id}
                       id={list.id}
+                      slug={list.slug}
                       name={list.name}
                       images={list.images}
                       brand={list.brand}
@@ -138,6 +138,7 @@ const Home = () => {
             <div key={list._id}>
               <ProductCard
                 _id={list._id}
+                slug={list.slug}
                 id={list.id}
                 name={list.name}
                 images={list.images}

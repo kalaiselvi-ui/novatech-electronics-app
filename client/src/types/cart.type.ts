@@ -1,5 +1,5 @@
 export interface CartItemProps {
-  id: string;
+  productId: string;
   quantity: number;
 }
 
@@ -9,4 +9,5 @@ export interface CartState {
   incrementQuantity: (id: string) => void;
   decrementQuantity: (id: string) => void;
   removeFromCart: (id: string) => void;
+  clearCart: () => void;
 }

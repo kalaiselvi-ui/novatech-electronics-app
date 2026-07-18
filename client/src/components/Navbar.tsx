@@ -30,7 +30,6 @@ const Navbar = () => {
 
   const navigate = useNavigate();
   const { cart } = useCartStore();
-  console.log(user?.role);
 
   useBodyScrollLock(isAuthModalOpen);
 

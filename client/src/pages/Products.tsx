@@ -1,7 +1,6 @@
 import { useMemo, useEffect, useRef, useState } from "react";
 import ProductGrid from "../components/ProductGrid.tsx";
 import FilterSidebar from "../components/FilterSidebar.tsx";
-import { productList } from "../data/product.ts";
 import { useFilterStore } from "../store/useFilterStore";
 import { useProducts } from "../hooks/useProducts.ts";
 

@@ -1,13 +1,18 @@
-import { useState } from "react";
+import { useMemo } from "react";
 import { shuffleArray } from "../utils/shuffle.ts";
-import { productList } from "../data/product.ts";
 import ProductCard from "../components/ProductCard.tsx";
+import { useProducts } from "../hooks/useProducts.ts";
 
 const FeaturedProducts = () => {
-  const [shuffledProducts] = useState(() => shuffleArray(productList));
-  const featuredProducts = shuffledProducts.filter(
-    (product) => product.isFeatured,
-  );
+  const { data: products = [] } = useProducts();
+
+  // 1. Filter the featured products first, then shuffle them
+  const featuredProducts = useMemo(() => {
+    if (!products.length) return [];
+
+    const featured = products.filter((product) => product.isFeatured);
+    return shuffleArray(featured);
+  }, [products]); // Re-runs only when the 'products' array changes (e.g., when data loads)
 
   return (
     <section className="max-w-7xl mx-auto md:px-8 px-4 py-10">
@@ -19,14 +24,16 @@ const FeaturedProducts = () => {
       </div>{" "}
       <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {featuredProducts.map((list) => (
-          <div key={list.id}>
+          <div key={list._id}>
             <ProductCard
               id={list.id}
+              _id={list._id}
               name={list.name}
-              imageUrls={list.imageUrls}
+              description={list.description || ""}
+              images={list.images}
               brand={list.brand}
               category={list.category}
-              rating={list.rating}
+              ratings={list.ratings}
               stock={list.stock}
               price={list.price}
             />

@@ -34,6 +34,14 @@ const Products = () => {
     );
   });
 
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center min-h-[400px]">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-slate-900" />
+      </div>
+    );
+  }
+
   // const shuffledProducts = shuffleArray(products);
   const shuffledProducts = useMemo(
     () => shuffleArray(filteredProducts),

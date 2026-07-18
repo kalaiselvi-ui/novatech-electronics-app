@@ -5,7 +5,30 @@ interface ShippingFormProps {
   onUseSavedAddress: () => void;
 }
 
-const ShippingForm: React.FC<ShippingFormProps> = ({ onUseSavedAddress }) => {
+export interface ShippingAddressData {
+  fullName: string;
+  email: string;
+  phone: string;
+  address: string;
+  city: string;
+  state: string;
+  postalCode: string;
+  country: string;
+}
+// 2. Expand props to accept values and the change handler
+interface ShippingFormProps {
+  values: ShippingAddressData;
+  onChange: (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+  ) => void;
+  onUseSavedAddress: () => void;
+}
+
+const ShippingForm: React.FC<ShippingFormProps> = ({
+  values,
+  onChange,
+  onUseSavedAddress,
+}) => {
   return (
     <div className="rounded-xl border bg-white p-6 shadow-sm">
       <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
@@ -27,6 +50,10 @@ const ShippingForm: React.FC<ShippingFormProps> = ({ onUseSavedAddress }) => {
           <label className="text-sm font-medium text-gray-600">Full Name</label>
           <input
             type="text"
+            name="fullName"
+            value={values.fullName}
+            onChange={onChange}
+            required
             placeholder="John Doe"
             className="mt-1 w-full rounded-lg border p-2.5 outline-none transition focus:border-primary focus:ring-1 focus:ring-primary"
           />
@@ -39,6 +66,10 @@ const ShippingForm: React.FC<ShippingFormProps> = ({ onUseSavedAddress }) => {
           <input
             type="email"
             placeholder="john@example.com"
+            name="email"
+            value={values.email}
+            required
+            onChange={onChange}
             className="mt-1 w-full rounded-lg border p-2.5 outline-none transition focus:border-primary focus:ring-1 focus:ring-primary"
           />
         </div>
@@ -50,28 +81,23 @@ const ShippingForm: React.FC<ShippingFormProps> = ({ onUseSavedAddress }) => {
           <input
             type="tel"
             placeholder="+971 50 123 4567"
+            name="phone"
+            value={values.phone}
+            required
+            onChange={onChange}
             className="mt-1 w-full rounded-lg border p-2.5 outline-none transition focus:border-primary focus:ring-1 focus:ring-primary"
           />
         </div>
 
         <div className="md:col-span-2">
-          <label className="text-sm font-medium text-gray-600">
-            Address Line 1
-          </label>
+          <label className="text-sm font-medium text-gray-600">Address</label>
           <input
             type="text"
+            name="address"
+            value={values.address}
+            onChange={onChange}
+            required
             placeholder="Street name, Building name, Apartment number"
-            className="mt-1 w-full rounded-lg border p-2.5 outline-none transition focus:border-primary focus:ring-1 focus:ring-primary"
-          />
-        </div>
-
-        <div className="md:col-span-2">
-          <label className="text-sm font-medium text-gray-600">
-            Address Line 2 (Optional)
-          </label>
-          <input
-            type="text"
-            placeholder="Landmark, villa number, etc."
             className="mt-1 w-full rounded-lg border p-2.5 outline-none transition focus:border-primary focus:ring-1 focus:ring-primary"
           />
         </div>
@@ -81,6 +107,10 @@ const ShippingForm: React.FC<ShippingFormProps> = ({ onUseSavedAddress }) => {
           <input
             type="text"
             placeholder="Dubai"
+            name="city"
+            value={values.city}
+            required
+            onChange={onChange}
             className="mt-1 w-full rounded-lg border p-2.5 outline-none transition focus:border-primary focus:ring-1 focus:ring-primary"
           />
         </div>
@@ -91,6 +121,10 @@ const ShippingForm: React.FC<ShippingFormProps> = ({ onUseSavedAddress }) => {
           </label>
           <input
             type="text"
+            name="state"
+            value={values.state}
+            required
+            onChange={onChange}
             placeholder="Dubai"
             className="mt-1 w-full rounded-lg border p-2.5 outline-none transition focus:border-primary focus:ring-1 focus:ring-primary"
           />
@@ -103,13 +137,23 @@ const ShippingForm: React.FC<ShippingFormProps> = ({ onUseSavedAddress }) => {
           <input
             type="text"
             placeholder="00000"
+            name="postalCode"
+            value={values.postalCode}
+            required
+            onChange={onChange}
             className="mt-1 w-full rounded-lg border p-2.5 outline-none transition focus:border-primary focus:ring-1 focus:ring-primary"
           />
         </div>
 
         <div>
           <label className="text-sm font-medium text-gray-600">Country</label>
-          <select className="mt-1 w-full rounded-lg border bg-white p-2.5 outline-none transition focus:border-primary focus:ring-1 focus:ring-primary">
+          <select
+            name="country"
+            value={values.country}
+            required
+            onChange={onChange}
+            className="mt-1 w-full rounded-lg border bg-white p-2.5 outline-none transition focus:border-primary focus:ring-1 focus:ring-primary"
+          >
             <option>United Arab Emirates</option>
             <option>United States</option>
             <option>United Kingdom</option>

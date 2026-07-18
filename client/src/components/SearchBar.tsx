@@ -1,6 +1,3 @@
-import { useNavigate } from "react-router-dom";
-import { useFilterStore } from "../store/useFilterStore.ts";
-
 // type SearchBarProps = {
 //   autoFocus?: boolean;
 //   onSearch?: (value: string) => void;

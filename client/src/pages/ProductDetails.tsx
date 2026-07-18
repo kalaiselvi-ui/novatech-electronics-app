@@ -1,13 +1,25 @@
 import { useState } from "react";
 import { useParams } from "react-router-dom";
-import { productList } from "../data/product";
 import { ShoppingCart, StarIcon } from "lucide-react";
+import { useProducts } from "../hooks/useProducts.ts";
+import { useCartStore } from "../store/useCartStore.ts";
 
 const ProductDetails = () => {
-  const { id } = useParams();
+  const { slug } = useParams();
 
-  const product = productList.find((item) => String(item.id) === id);
+  const { data: products = [], isLoading } = useProducts();
 
+  const product = products.find((item) => String(item.slug) === slug);
+
+  const { addToCart } = useCartStore();
+
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center min-h-[400px]">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-slate-900" />
+      </div>
+    );
+  }
   const [selectedImage, setSelectedImage] = useState(0);
   const [qty, setQty] = useState(1);
 
@@ -17,7 +29,7 @@ const ProductDetails = () => {
     );
   }
 
-  const images = product.imageUrls || [];
+  const images = product.images || [];
 
   return (
     <section className="max-w-7xl mx-auto px-4 md:px-8 py-10">
@@ -57,7 +69,7 @@ const ProductDetails = () => {
           {/* Category + Brand */}
           <div className="flex gap-2 flex-wrap">
             <span className="text-xs px-3 py-1 bg-gray-100 rounded-full">
-              Category: {product.category}
+              Category: {product.category.name}
             </span>
 
             <span className="text-xs px-3 py-1 bg-secondary/20 text-secondary rounded-full">
@@ -82,13 +94,13 @@ const ProductDetails = () => {
                   <StarIcon
                     key={index}
                     size={18}
-                    className={`${product.rating >= starValue ? "fill-amber-500 stroke-amber-500" : "text-gray-300 stroke-gray-300"}`}
+                    className={`${product?.ratings !== undefined && product?.ratings >= starValue ? "fill-amber-500 stroke-amber-500" : "text-gray-300 stroke-gray-300"}`}
                   />
                 );
               })}
             </div>
             <span className="text-sm font-bold text-slate-700 ml-1">
-              {product.rating}
+              {product.ratings}
             </span>
           </div>
 
@@ -146,6 +158,7 @@ const ProductDetails = () => {
 
           {/* Add to Cart */}
           <button
+            onClick={() => addToCart(product._id)}
             aria-label="shoppingCart-icon"
             className="flex gap-2 items-center rounded-xl border border-primary bg-primary px-7 py-3 font-semibold text-white transition-all duration-300 hover:border-secondary hover:shadow-[0_12px_30px_rgba(0,51,102,0.25)]"
           >

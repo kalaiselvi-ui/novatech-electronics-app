@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
-import SocialLogin from "./SocialLogin";
 import { loginSchema, type LoginFormData } from "../../schemas/auth.schema.ts";
 import { useAuthMutations } from "../../hooks/useAuthMutations.ts";
 import { useNavigate } from "react-router-dom";
@@ -151,7 +150,7 @@ const LoginForm = ({ onForgotPassword }: any) => {
       </button>
 
       {/* Social Login */}
-      <SocialLogin />
+      {/* <SocialLogin /> */}
     </form>
   );
 };

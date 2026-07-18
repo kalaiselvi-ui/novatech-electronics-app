@@ -8,13 +8,15 @@ export const useCartStore = create<CartState>()(
     persist(
       (set) => ({
         cart: [],
-        addToCart: (id) =>
+        addToCart: (productId) =>
           set((state) => {
-            const existingItem = state.cart.find((item) => item.id === id);
+            const existingItem = state.cart.find(
+              (item) => item.productId === productId,
+            );
             if (existingItem) {
               return {
                 cart: state.cart.map((item) =>
-                  item.id === id
+                  item.productId === productId
                     ? { ...item, quantity: item.quantity + 1 }
                     : item,
                 ),
@@ -22,30 +24,35 @@ export const useCartStore = create<CartState>()(
             }
             toast.success("Added to cart! ✨"); // Toast for Add
             return {
-              cart: [...state.cart, { id: id, quantity: 1 }],
+              cart: [...state.cart, { productId: productId, quantity: 1 }],
             };
           }),
-        incrementQuantity: (id) =>
+        incrementQuantity: (productId) =>
           set((state) => ({
             cart: state.cart.map((item) =>
-              item.id === id ? { ...item, quantity: item.quantity + 1 } : item,
+              item.productId === productId
+                ? { ...item, quantity: item.quantity + 1 }
+                : item,
             ), // <-- The .map() parenthesis closes down here!
           })),
-        decrementQuantity: (id) =>
+        decrementQuantity: (productId) =>
           set((state) => ({
             cart: state.cart.map((item) =>
-              item.id === id
+              item.productId === productId
                 ? { ...item, quantity: Math.max(1, item.quantity - 1) }
                 : item,
             ), // <-- The .map() parenthesis closes down here!
           })),
-        removeFromCart: (id) =>
+        removeFromCart: (productId) =>
           set((state) => {
             toast.error("Item removed from cart 🗑️"); // Toast for Delete
             return {
-              cart: state.cart.filter((item) => item.id !== id),
+              cart: state.cart.filter((item) => item.productId !== productId),
             };
           }),
+        clearCart: () => {
+          set({ cart: [] });
+        },
       }),
       {
         name: "novaCart-cart", // 2. Unique storage key name in localStorage
@@ -53,7 +60,7 @@ export const useCartStore = create<CartState>()(
     ),
     {
       name: "NovaCart Store", // 👈 This forces the DevTools instance to register with this name
-      enabled: true, // 👈 Explicitly forces the bridge to turn on
+      enabled: true, // 👈 Explicitly forces the brproductIdge to turn on
     },
   ),
 );

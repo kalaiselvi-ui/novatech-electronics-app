@@ -1,5 +1,4 @@
 import type { RefObject } from "react";
-import type { Category } from "./category.ts";
 
 export type SlideData = {
   id: number;

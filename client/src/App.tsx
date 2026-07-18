@@ -11,6 +11,7 @@ import MyProfile from "./pages/MyProfile.tsx";
 import MyOrders from "./pages/Orders.tsx";
 import { ResetPassword } from "./components/auth/ResetPassword.tsx";
 import { Toaster } from "react-hot-toast";
+import OrderSuccess from "./pages/OrderSuccess.tsx";
 
 const Home = lazy(() => import("./pages/Home.tsx"));
 const FeaturedProducts = lazy(() => import("./pages/FeaturedProducts.tsx"));
@@ -31,13 +32,14 @@ const App = () => {
             <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/products" element={<Products />} />
-            <Route path="/product/:id" element={<ProductDetails />} />
+            <Route path="/product/:slug" element={<ProductDetails />} />
             <Route path="/featured-products" element={<FeaturedProducts />} />
             <Route path="/cart" element={<CartPage />} />
             <Route path="/checkout" element={<Checkout />} />
             <Route path="/profile" element={<MyProfile />} />
             <Route path="/orders" element={<MyOrders />} />
             <Route path="/reset-password" element={<ResetPassword />} />
+            <Route path="/order-success/:id" element={<OrderSuccess />} />
           </Route>
           <Route path="/admin" element={<AdminLayout />}>
             <Route index element={<Dashboard />} />

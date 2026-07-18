@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
-import SocialLogin from "./SocialLogin";
 import {
   registerSchema,
   type RegisterFormData,
@@ -196,7 +195,7 @@ const RegisterForm = () => {
       </button>
 
       {/* Social Login */}
-      <SocialLogin />
+      {/* <SocialLogin /> */}
     </form>
   );
 };

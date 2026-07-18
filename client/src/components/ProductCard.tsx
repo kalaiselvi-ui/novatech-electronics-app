@@ -13,7 +13,7 @@ import {
 import { useCartStore } from "../store/useCartStore.ts";
 
 const ProductCard = ({
-  id,
+  _id,
   name,
   brand,
   images,
@@ -21,6 +21,7 @@ const ProductCard = ({
   ratings,
   stock,
   category,
+  slug,
   isFeatured,
 }: ProductProps) => {
   const {
@@ -31,7 +32,7 @@ const ProductCard = ({
     removeFromCart,
   } = useCartStore();
 
-  const cartItem = cart.find((item) => item.id === id);
+  const cartItem = cart.find((item) => item.productId === _id);
   const quantity = cartItem ? cartItem.quantity : 0;
 
   // Image slider active index state
@@ -53,7 +54,7 @@ const ProductCard = ({
 
   return (
     <Link
-      to={`/product/${id}`}
+      to={`/product/${slug}`}
       className="group block bg-slate-50/40 rounded-2xl overflow-hidden border border-gray-100 shadow-[0_4px_12px_rgba(0,0,0,0.02)] hover:shadow-[0_16px_36px_rgba(0,0,0,0.08)] hover:bg-white transition-all duration-300 relative"
     >
       {/* Product Image Gallery Canvas */}
@@ -170,7 +171,7 @@ const ProductCard = ({
               onClick={(e) => {
                 e.preventDefault();
                 e.stopPropagation();
-                addToCart(id);
+                addToCart(_id);
               }}
               className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl border-primary border text-black hover:text-white text-xs font-bold hover:bg-primary transition-all duration-200 shadow-md shadow-gray-900/10 hover:shadow-blue-600/10"
             >
@@ -187,7 +188,7 @@ const ProductCard = ({
             >
               <button
                 onClick={() =>
-                  quantity === 1 ? removeFromCart(id) : decrementQuantity(id)
+                  quantity === 1 ? removeFromCart(_id) : decrementQuantity(_id)
                 }
                 className="flex items-center justify-center h-full px-4 text-white hover:bg-white/10 transition-colors"
               >
@@ -202,7 +203,7 @@ const ProductCard = ({
               </span>
               <button
                 disabled={quantity >= stock}
-                onClick={() => incrementQuantity(id)}
+                onClick={() => incrementQuantity(_id)}
                 className="flex items-center justify-center h-full px-4 text-white hover:bg-white/10 transition-colors disabled:opacity-30"
               >
                 <Plus size={14} />

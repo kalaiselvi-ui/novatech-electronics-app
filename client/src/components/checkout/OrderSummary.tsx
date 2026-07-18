@@ -1,18 +1,31 @@
 import { ShieldCheck, Truck } from "lucide-react";
 import { useCartStore } from "../../store/useCartStore.ts";
-import { productList } from "../../data/product.ts";
+import { useProducts } from "../../hooks/useProducts.ts";
+import { useEffect } from "react";
 
-const OrderSummary = () => {
+interface OrderSummaryProps {
+  onPlaceOrder: () => void;
+  onTotalCalculate: (total: number) => void;
+}
+
+const OrderSummary = ({
+  onPlaceOrder,
+  onTotalCalculate,
+}: OrderSummaryProps) => {
   const { cart: cartItems } = useCartStore();
+  const { data: products = [] } = useProducts();
 
   // 1. Calculate the Subtotal up here at the top level!
   const subtotal = cartItems.reduce((acc, item) => {
-    const productDetails = productList.find((p) => p.id === item.id);
+    const productDetails = products.find((p) => p._id === item.productId);
     return acc + (productDetails ? productDetails.price * item.quantity : 0);
   }, 0);
   const shipping = 0; // Free
-  const tax = 25;
+  const tax = subtotal > 0 ? 25 : 0; // Only add tax if items are in the cart
   const total = subtotal + shipping + tax;
+  useEffect(() => {
+    onTotalCalculate(total);
+  }, [total, onTotalCalculate]);
 
   return (
     <div className="sticky top-24 space-y-6">
@@ -24,19 +37,21 @@ const OrderSummary = () => {
         {/* Product List */}
         <div className="max-h-60 overflow-y-auto border-b pb-4 space-y-4">
           {cartItems.map((item) => {
-            const productDetails = productList.find((p) => p.id === item.id);
+            const productDetails = products.find(
+              (p) => p._id === item.productId,
+            );
 
             // If the product doesn't exist in your master data, skip rendering it
             if (!productDetails) return null;
 
             return (
               <div
-                key={item.id}
+                key={item.productId}
                 className="flex items-center justify-between gap-4"
               >
                 <div className="flex items-center gap-3">
                   <img
-                    src={productDetails.imageUrls[0]}
+                    src={productDetails.images[0]}
                     alt={productDetails.name}
                     className="h-12 w-12 rounded-lg border object-cover"
                   />
@@ -94,7 +109,10 @@ const OrderSummary = () => {
         </div>
 
         {/* Main CTA */}
-        <button className="mt-6 w-full rounded-lg bg-primary py-3 text-center font-semibold text-white transition hover:opacity-90">
+        <button
+          onClick={onPlaceOrder}
+          className="mt-6 w-full rounded-lg bg-primary py-3 text-center font-semibold text-white transition hover:opacity-90"
+        >
           Place Order
         </button>
       </div>

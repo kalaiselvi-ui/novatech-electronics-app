@@ -1,7 +1,9 @@
 import { useCartStore } from "../store/useCartStore.ts";
-import { productList } from "../data/product.ts";
 import { ArrowRight, Trash } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
+import { useProducts } from "../hooks/useProducts.ts";
+import { useAuthStore } from "../store/useAuthStore.ts";
+import toast from "react-hot-toast";
 
 const CartPage = () => {
   const navigate = useNavigate();
@@ -11,6 +13,16 @@ const CartPage = () => {
     decrementQuantity,
     removeFromCart,
   } = useCartStore();
+  const { data: products = [], isLoading } = useProducts();
+  const { isAuthenticated, openAuthModal } = useAuthStore();
+
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center min-h-[400px]">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-slate-900" />
+      </div>
+    );
+  }
 
   if (cartItems.length === 0) {
     return (
@@ -33,7 +45,7 @@ const CartPage = () => {
 
   // 1. Calculate the Subtotal up here at the top level!
   const subtotal = cartItems.reduce((acc, item) => {
-    const productDetails = productList.find((p) => p.id === item.id);
+    const productDetails = products.find((p) => p._id === item.productId);
     return acc + (productDetails ? productDetails.price * item.quantity : 0);
   }, 0);
 
@@ -51,19 +63,21 @@ const CartPage = () => {
         <div className="lg:col-span-2 space-y-4">
           {cartItems.map((item) => {
             // Find the full product object from your master array using item.productId
-            const productDetails = productList.find((p) => p.id === item.id);
+            const productDetails = products.find(
+              (p) => p._id === item.productId,
+            );
 
             // If the product doesn't exist in your master data, skip rendering it
             if (!productDetails) return null;
 
             return (
               <div
-                key={item.id}
+                key={item.productId}
                 className="flex flex-col sm:flex-row items-center justify-between border-b pb-4 gap-4"
               >
                 {/* Product Image */}
                 <img
-                  src={productDetails.imageUrls[0]}
+                  src={productDetails.images[0]}
                   alt={productDetails.name}
                   className="w-24 h-24 object-cover rounded-lg bg-gray-50 border"
                 />
@@ -82,7 +96,7 @@ const CartPage = () => {
                 <div className="flex items-center border border-gray-300 rounded-md bg-white shadow-sm">
                   <button
                     disabled={item.quantity === 1}
-                    onClick={() => decrementQuantity(item.id)}
+                    onClick={() => decrementQuantity(item.productId)}
                     className="px-3 py-1 text-gray-600 disabled:cursor-not-allowed hover:bg-gray-100 transition-colors font-semibold"
                   >
                     −
@@ -91,7 +105,7 @@ const CartPage = () => {
                     {item.quantity}
                   </span>
                   <button
-                    onClick={() => incrementQuantity(item.id)}
+                    onClick={() => incrementQuantity(item.productId)}
                     className="px-3 py-1 text-gray-600 hover:bg-gray-100 transition-colors font-semibold"
                   >
                     +
@@ -104,7 +118,7 @@ const CartPage = () => {
                     ${(productDetails.price * item.quantity).toFixed(2)}
                   </p>
                   <button
-                    onClick={() => removeFromCart(item.id)}
+                    onClick={() => removeFromCart(item.productId)}
                     aria-label="Trash-icon"
                     className="text-sm text-red-500 hover:text-red-700 hover:underline mt-1 transition-colors"
                   >
@@ -147,7 +161,14 @@ const CartPage = () => {
           </div>
 
           <button
-            onClick={() => navigate("/checkout")}
+            onClick={() => {
+              if (!isAuthenticated) {
+                toast.error("Please login to continue checkout");
+                openAuthModal("login");
+                return;
+              }
+              navigate("/checkout");
+            }}
             className="w-full bg-primary duration-100 text-white py-3 rounded-lg font-semibold hover:bg-primary/80 transition-colors shadow-md"
           >
             Proceed to Checkout
