@@ -3,7 +3,7 @@ import type { Category } from "../types/category.ts";
 import { API } from "./axiosInstance.ts";
 
 export const createCategoryApi = async (formData: FormData) => {
-  const { data } = await API.post("/category/create", formData);
+  const { data } = await API.post("/api/category/create", formData);
   return data;
 };
 
@@ -14,16 +14,16 @@ export const updateCategoryApi = async ({
   id: string;
   formData: FormData;
 }) => {
-  const { data } = await API.put(`/category/update/${id}`, formData);
+  const { data } = await API.put(`/api/category/update/${id}`, formData);
   return data;
 };
 
 export const deleteCategoryApi = async (id: string) => {
-  const { data } = await API.delete(`/category/delete/${id}`);
+  const { data } = await API.delete(`/api/category/delete/${id}`);
   return data;
 };
 
 export const fetchCategoriesApi = async (): Promise<Category[]> => {
-  const { data } = await API.get<ApiResponse<Category[]>>("/category/all");
+  const { data } = await API.get<ApiResponse<Category[]>>("/api/category/all");
   return data.data;
 };

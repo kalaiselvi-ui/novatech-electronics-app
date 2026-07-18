@@ -3,27 +3,27 @@ import type { ForgotPasswordPayload } from "../types/auth.type.ts";
 import { API } from "./axiosInstance.ts";
 
 export const loginApi = async (formData: Record<string, any>) => {
-  const { data } = await API.post("/user/login", formData);
+  const { data } = await API.post("/api/user/login", formData);
   return data;
 };
 
 export const registerApi = async (formData: Record<string, any>) => {
-  const { data } = await API.post("/user/register", formData);
+  const { data } = await API.post("/api/user/register", formData);
 
   return data;
 };
 
 export const forgotPasswordApi = async (email: ForgotPasswordPayload) => {
-  const { data } = await API.post("/user/forgot-password", email);
+  const { data } = await API.post("/api/user/forgot-password", email);
 
   return data;
 };
 export const resetPasswordApi = async (formData: Record<string, any>) => {
-  const { data } = await API.post("/user/reset-password", formData);
+  const { data } = await API.post("/api/user/reset-password", formData);
   return data;
 };
 export const logoutApi = async () => {
-  const { data } = await API.post("/user/logout");
+  const { data } = await API.post("/api/user/logout");
   return data;
 };
 export const googleLoginApi = async (payload: { credential: string }) => {

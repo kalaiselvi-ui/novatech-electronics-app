@@ -6,7 +6,7 @@ interface PaymentIntentPayload {
 }
 
 export const createPaymentIntent = async (data: PaymentIntentPayload) => {
-  const response = await API.post("/payment/create-payment-intent", data);
+  const response = await API.post("/api/payment/create-payment-intent", data);
 
   return response.data;
 };
